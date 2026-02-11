@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# freedom
-这是我的个人博客，用于展示作品，交流，学习。
-=======
 # wwww
 
 The Site is generated using [vuepress](https://vuepress.vuejs.org/) and [vuepress-theme-plume](https://github.com/pengzhanbo/vuepress-theme-plume)

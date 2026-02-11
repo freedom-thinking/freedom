@@ -50,8 +50,8 @@ export default defineThemeConfig({
    */
   profile: {
     avatar: 'https://theme-plume.vuejs.press/plume.png',
-    name: 'wwww',
-    description: 'llll',
+    name: 'ggg',
+    description: '我的个人博客',
     // circle: true,
     // location: '',
     // organization: '',

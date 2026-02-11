@@ -17,9 +17,7 @@ export default defineUserConfig({
   base: '/freedom/',
   lang: 'zh-CN',
   title: 'wwww',
-  description: 'llll',
-  host: 'localhost', // 指定域名，例如'localhost'，或者'0.0.0.0'让所有网络可访问
-  port: 8089, // 指定端口号
+  description: '我的个人博客',
 
   head: [
     // 配置站点图标
@@ -31,7 +29,7 @@ export default defineUserConfig({
 
   theme: plumeTheme({
     /* 添加您的部署域名, 有助于 SEO, 生成 sitemap */
-    hostname: 'https://freedom-thinking.github.io/freedom/',
+    // hostname: 'https://your_site_url',
 
     /* 文档仓库配置，用于 editLink */
     // docsRepo: '',
