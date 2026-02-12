@@ -8,9 +8,9 @@ config:
     forceDark: true
     effect: lightning
     hero:
-      name: Theme Plume
-      tagline: VuePress Next Theme
-      text: 一个简约的，功能丰富的 vuepress 文档&博客 主题
+      name: Trace
+      tagline:  From Learning to Building
+      text: 一路写下的，不只是笔记，是成长的痕迹
       actions:
         -
           theme: brand
@@ -19,5 +19,5 @@ config:
         -
           theme: alt
           text: Github →
-          link: https://github.com/pengzhanbo/vuepress-theme-plume
+          link: https://freedom-thinking.github.io/freedom/
 ---
