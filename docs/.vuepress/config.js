@@ -28,6 +28,9 @@ export default defineUserConfig({
   shouldPrefetch: false, // 站点较大，页面数量较多时，不建议启用
 
   theme: plumeTheme({
+    // 自定义配置文件路径
+    // configFile: path.join(__dirname, 'custom/config.ts'), 
+  
     /* 添加您的部署域名, 有助于 SEO, 生成 sitemap */
     hostname: 'https://github.com/freedom-thinking/freedom',
 

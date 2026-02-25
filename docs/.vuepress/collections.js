@@ -36,11 +36,11 @@ const blog = defineCollection({
   // 文章列表页的链接，如果 `linkPrefix` 未定义，它也将作为 相关的文章的 permalink 的前缀
   link: '/blog/',
   //   linkPrefix: '/article/', // 相关文章的链接前缀
-  //   postList: true, // 是否启用文章列表页
-  //   tags: true, // 是否启用标签页
-  //   archives: true, // 是否启用归档页
-  //   categories: true, // 是否启用分类页
-  //   postCover: 'right', // 文章封面位置
+    postList: true, // 是否启用文章列表页
+    tags: true, // 是否启用标签页
+    archives: true, // 是否启用归档页
+    categories: true, // 是否启用分类页
+    postCover: 'right', // 文章封面位置
   //   pagination: 15, // 每页显示文章数量
 })
 
