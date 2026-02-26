@@ -43,6 +43,81 @@ const blog = defineCollection({
     postCover: 'right', // 文章封面位置
   //   pagination: 15, // 每页显示文章数量
 })
+// 面试技巧
+const interview = defineCollection({
+  // post 类型，这里用于实现 博客功能
+  type: 'post',
+  // 文档集合所在目录，相对于 `docs`
+  dir: 'interview',
+  // 文档标题，它将用于在页面的面包屑导航中显示
+  title: '面试经验',
+  // 文章列表页的链接，如果 `linkPrefix` 未定义，它也将作为 相关的文章的 permalink 的前缀
+  link: '/interview/',
+  //   linkPrefix: '/article/', // 相关文章的链接前缀
+  //   postList: true, // 是否启用文章列表页
+  //   tags: true, // 是否启用标签页
+  //   archives: true, // 是否启用归档页
+  //   categories: true, // 是否启用分类页
+  //   postCover: 'right', // 文章封面位置
+  //   pagination: 15, // 每页显示文章数量
+})
+
+// 个人随笔
+const personal = defineCollection({
+  // post 类型，这里用于实现 博客功能
+  type: 'post',
+  // 文档集合所在目录，相对于 `docs`
+  dir: 'personal',
+  // 文档标题，它将用于在页面的面包屑导航中显示
+  title: '个人随笔',
+  // 文章列表页的链接，如果 `linkPrefix` 未定义，它也将作为 相关的文章的 permalink 的前缀
+  link: '/personal/',
+  //   linkPrefix: '/article/', // 相关文章的链接前缀
+  //   postList: true, // 是否启用文章列表页
+  //   tags: true, // 是否启用标签页
+  //   archives: true, // 是否启用归档页
+  //   categories: true, // 是否启用分类页
+  //   postCover: 'right', // 文章封面位置
+  //   pagination: 15, // 每页显示文章数量
+})
+
+// 技术分享
+const technology = defineCollection({
+  // post 类型，这里用于实现 博客功能
+  type: 'post',
+  // 文档集合所在目录，相对于 `docs`
+  dir: 'technology',
+  // 文档标题，它将用于在页面的面包屑导航中显示
+  title: '技术分享',
+  // 文章列表页的链接，如果 `linkPrefix` 未定义，它也将作为 相关的文章的 permalink 的前缀
+  link: '/technology/',
+  //   linkPrefix: '/article/', // 相关文章的链接前缀
+  //   postList: true, // 是否启用文章列表页
+  //   tags: true, // 是否启用标签页
+  //   archives: true, // 是否启用归档页
+  //   categories: true, // 是否启用分类页
+  //   postCover: 'right', // 文章封面位置
+  //   pagination: 15, // 每页显示文章数量
+})
+
+// 简历编写
+const resume = defineCollection({
+  // post 类型，这里用于实现 博客功能
+  type: 'post',
+  // 文档集合所在目录，相对于 `docs`
+  dir: 'resume',
+  // 文档标题，它将用于在页面的面包屑导航中显示
+  title: '简历编写',
+  // 文章列表页的链接，如果 `linkPrefix` 未定义，它也将作为 相关的文章的 permalink 的前缀
+  link: '/resume/',
+  //   linkPrefix: '/article/', // 相关文章的链接前缀
+  //   postList: true, // 是否启用文章列表页
+  //   tags: true, // 是否启用标签页
+  //   archives: true, // 是否启用归档页
+  //   categories: true, // 是否启用分类页
+  //   postCover: 'right', // 文章封面位置
+  //   pagination: 15, // 每页显示文章数量
+})
 
 const demoDoc = defineCollection({
   // doc 类型，该类型带有侧边栏
@@ -58,7 +133,7 @@ const demoDoc = defineCollection({
   // 手动配置侧边栏结构
   sidebar: ['', 'foo', 'bar'],
   // 根据文件结构自动生成侧边栏
-  // sidebar: 'auto',
+  sidebar: 'auto',
 })
 
 /**
@@ -69,4 +144,8 @@ const demoDoc = defineCollection({
 export default defineCollections([
   blog,
   demoDoc,
+  interview,
+  personal,
+  technology,
+  resume
 ])

@@ -10,6 +10,15 @@ config:
     hero:
       name: Trace
       tagline:  From Learning to Building
+    effectConfig:
+      hue: 235
+      xOffset: 0
+      speed: 0.8
+      intensity: 1
+      size: 1
+    hero:
+      name: Trace - 痕迹
+      tagline: From Learning to Building
       text: 一路写下的，不只是笔记，是成长的痕迹
       actions:
         -
@@ -20,7 +29,31 @@ config:
           theme: alt
           text: Github
           link: https://freedom-thinking.github.io/freedom/
-
+          text: 开始
+          link: /blog/
+        -
+          theme: sponsor
+          text: Github →
+          link: https://github.com/freedom-thinking
+  -
+    type: banner
+    banner: banner.webp
+    bannerMask:
+      light: 0.1
+      dark: 0.3
+    hero:
+      name: Trace - 痕迹
+      tagline: From Learning to Building
+      text: 即使慢，驰而不息，纵会落后，纵会失败，但必须能够到达他所向的目标。
+      actions:
+        -
+          text: 我的博客
+          link: /blog/
+          theme: brand
+        -
+          text: Github
+          link: https://github.com/pengzhanbo
+          theme: sponsor
   -
     type: features
     features:
@@ -60,6 +93,5 @@ config:
         title: Markdown 增强
         icon: 📝
         details: 支持 Markdown 语法，支持 代码块分组、提示容器、任务列表、数学公式、代码演示等
-      
 ---
 
