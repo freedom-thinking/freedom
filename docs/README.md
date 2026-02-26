@@ -21,7 +21,6 @@ config:
           theme: brand
           text: 开始
           link: /blog/
-  
         -
           theme: sponsor
           text: Github →
