@@ -16,21 +16,12 @@ config:
       speed: 0.8
       intensity: 1
       size: 1
-    hero:
-      name: Trace - 痕迹
-      tagline: From Learning to Building
-      text: 一路写下的，不只是笔记，是成长的痕迹
       actions:
         -
           theme: brand
-          text: 博客
-          link: /blog/
-        -
-          theme: alt
-          text: Github
-          link: https://freedom-thinking.github.io/freedom/
           text: 开始
           link: /blog/
+  
         -
           theme: sponsor
           text: Github →
