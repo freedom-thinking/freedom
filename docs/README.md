@@ -7,15 +7,16 @@ config:
     full: true
     forceDark: true
     effect: lightning
-    hero:
-      name: Trace
-      tagline:  From Learning to Building
     effectConfig:
       hue: 235
       xOffset: 0
       speed: 0.8
       intensity: 1
       size: 1
+    hero:
+      name: Trace - 痕迹
+      tagline:  From Learning to Building
+      text: 一路写下的，不只是笔记，而是成长的痕迹
       actions:
         -
           theme: brand
