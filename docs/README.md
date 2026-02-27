@@ -5,7 +5,7 @@ config:
   -
     type: hero
     full: true
-    forceDark: true
+    forceDark: false
     effect: lightning
     effectConfig:
       hue: 235
