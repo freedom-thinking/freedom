@@ -16,12 +16,12 @@ import { plumeTheme } from 'vuepress-theme-plume'
 export default defineUserConfig({
   base: '/freedom/',
   lang: 'zh-CN',
-  title: 'wwww',
+  title: '迷途小狗',
   description: '我的个人博客',
 
   head: [
     // 配置站点图标
-    ['link', { rel: 'icon', type: 'image/png', href: 'https://theme-plume.vuejs.press/favicon-32x32.png' }],
+    ['link', { rel: 'icon', type: 'image/png', href: 'smallSheep.svg' }],
   ],
 
   bundler: webpackBundler(),

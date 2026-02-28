@@ -20,7 +20,8 @@ export default defineNavbarConfig([
     text: '笔记',
     items: [
       { text: '示例', link: '/note/README.md' },
-      { text: 'Node.js', link: '/note/Node.js/README.md' }
+      { text: 'Node.js', link: '/note/Node.js/README.md' },
+      { text: '博客网站搭建', link: '/note/零基础如何搭建个人博客网站/README.md' }
     ]
   },
 ])

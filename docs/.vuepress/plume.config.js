@@ -18,7 +18,7 @@ import collections from './collections'
  * @see https://theme-plume.vuejs.press/config/theme/
  */
 export default defineThemeConfig({
-  logo: 'https://theme-plume.vuejs.press/plume.png',
+  logo: 'smallSheep.svg',
 
   appearance: true,  // 配置 深色模式
 
@@ -50,8 +50,8 @@ export default defineThemeConfig({
    */
   profile: {
     avatar: 'avatar.jpg',
-    name: 'wwww',
-    description: '我的个人博客',
+    name: '银银子',
+    description: '人生没有白走的路，你走的每一步都算数',
     // circle: true,
     // location: '',
     // organization: '',
