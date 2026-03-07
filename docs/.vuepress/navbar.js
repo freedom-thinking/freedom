@@ -21,7 +21,9 @@ export default defineNavbarConfig([
     items: [
       { text: '示例', link: '/note/README.md' },
       { text: 'Node.js', link: '/note/Node.js/README.md' },
-      { text: '博客网站搭建', link: '/note/零基础如何搭建个人博客网站/README.md' }
+      { text: '博客网站搭建', link: '/note/零基础如何搭建个人博客网站/README.md' },
+      { text: 'JAVA', link: '/note/JAVA/README.md' },
+      { text: 'CAD入门', link: '/note/CAD入门/README.md' },
     ]
   },
 ])
