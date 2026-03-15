@@ -25,7 +25,7 @@ permalink: /note/零基础如何搭建个人博客网站/
 - 安装Typora Markdown 编辑器 网址: https://typoraio.cn/releases/stable.html
   <img src="../static/build_blog/2.png">
 
-## (二)、VuePress介绍
+### (二)、VuePress介绍
 
 VuePress 是一个以Markdown为重心的静态网站生成器。你可以使用Markdown来书写内容，然后VuePress会帮助你生成一个静态网站来展示它们。VuePress 提供了一个默认主题，主题代表的就是一个网站的整体风格，样式，设计。有很多社区用户创建了其它主题，并把它发布到网上。最具代表的有三个主题，分别是Hope主题，Plume主题，Reco主题。具体网址: https://ecosystem.vuejs.press/zh/themes/default/ 画面如下：
 
@@ -45,7 +45,7 @@ Plume主题 如下图所示
 
 ### (一)、主题介绍
 
-网址: https://theme-plume.vuejs.press
+官网地址: https://theme-plume.vuejs.press
 
 如上图所示，可以看到整个页面非常的炫酷，很美观可人。vuepress-theme-plume 是基于 VuePress 构建的现代化主题，无论您需要创建**技术博客**、**生活随笔**、**产品文档**、**知识库**还是**系列教程**，都能满足您的多样化需求。
 
@@ -116,7 +116,7 @@ Plume主题 如下图所示
 
    <img src="../static/build_blog/9.png">
 
-   (3)、ctrl＋鼠标左键 打开网址 画面如下
+   (3)、ctrl＋鼠标左击 打开网址 画面如下
    <img src="../static/build_blog/10.png">
 
 3. ####  项目结构 (了解即可)
@@ -151,11 +151,11 @@ Plume主题 如下图所示
 
 1. #### 首页配置
 
-   在配置首页之前我们需要插播一条知识点。即Frontmatter。
+   在配置首页之前我们需要插播一条知识点，即Frontmatter。(看一看吧，看不懂有个眼缘也行)
 
    - ##### Frontmatter是什么？
 
-     直译：**前页/前置元素** 是一种常用于静态站点生成器的编辑器技术。最常见的格式是YAML(以---开头和结尾) ，它能够自定义变量，静态站点生成器在构建网站时，会读取这些数据，并将其注入到页面模板中。如：模板文件会读取title变量，自动将其放到HTML的<title></title>标签中和页面的大标题位置。
+     直译：**前页/前置元素** 是一种常用于静态站点生成器的编辑器技术。最常见的格式是**YAML**(以---开头和结尾) ，它能够自定义变量，静态站点生成器在构建网站时，会读取这些数据，并将其注入到页面模板中。如：模板文件会读取title变量，自动将其放到HTML的<title></title>标签中和页面的大标题位置。
 
    - ##### YAML核心规则
 
@@ -166,7 +166,7 @@ Plume主题 如下图所示
 
    - ##### YAML核心数据结构
 
-     - 标量：标量是最基本的数据单元，可以是字符串、整数、浮点数、布尔值、Null、时间等。
+     - **标量**：标量是最基本的数据单元，可以是字符串、整数、浮点数、布尔值、Null、时间等。
 
        ```yaml
        # 字符串（一般不需要加引号）
@@ -190,7 +190,7 @@ Plume主题 如下图所示
        datetime: 2023-10-27T15:30:00+08:00  # 带时区
        ```
 
-     - 对象：键值对集合，用冒号 `:`分隔键和值
+     - **对象**：键值对集合，用冒号 `:`分隔键和值
 
        ```yaml
        # 普通对象
@@ -202,7 +202,7 @@ Plume主题 如下图所示
            street: 长安街
        ```
 
-     - 数组：用连字符 `-` 表示列表项
+     - **数组**：用连字符 `-` 表示列表项
 
        ```yaml
        # 普通列表
@@ -219,11 +219,13 @@ Plume主题 如下图所示
            age: 32
        ```
 
-   打开docs/README.md 配置首页站点，如图所示：
+   ##### (1) 参数讲解
+
+   用Typora这个软件打开docs/README.md 配置首页站点，你会发现这个文件的最顶部有一坨灰色的东西，如图所示：
 
    <img src="../static/build_blog/11.png">
 
-   ##### **首页参数讲解**
+   以下是这些参数代表的含义：
 
    ①、pageLayout
 
@@ -239,6 +241,113 @@ Plume主题 如下图所示
 
    - 类型：`array`（数组）
    - 详情：这是一个配置数组，用于定义首页上不同区块的内容和样式。数组中的每个对象代表一个独立的区块。
+
+   ```yaml
+   ---
+   pageLayout: home        # 页面布局类型 home表示当前页面为首页布局
+   externalLinkIcon: false # 是否显示外部链接图标 true显示，false不显示
+   config:                 # 页面配置数组
+     - type: hero         # 第一个区块类型：英雄区 页面最上方的大标题区域
+       full: true         # 是否全宽显示
+       forceDark: true    # 强制深色模式
+       effect: lightning  # 特效类型 还有很多特效后续介绍
+       hero:              # 英雄区内容配置
+         name: Theme Plume      # 大标题
+         tagline: VuePress Next Theme  # 副标题
+         text: 一个简约的，功能丰富的 vuepress 文档&博客 主题  # 描述文字
+         actions:         # 操作按钮
+           - theme: brand      # 按钮主题样式
+             text: 博客        # 按钮文字
+             link: /blog/      # 按钮链接
+           - theme: alt        # 另一种主题样式
+             text: Github →    # 按钮文字
+             link: https://github.com/pengzhanbo/vuepress-theme-plume  # 按钮链接
+   ---
+   ```
+
+   <img src="../static/build_blog/12.png">
+
+   ##### (2)配置说明
+
+   ###### ① 顶层配置
+
+   | 配置项             | 值      | 说明                                              |
+   | :----------------- | :------ | :------------------------------------------------ |
+   | `pageLayout`       | `home`  | 指定当前页面为首页布局                            |
+   | `externalLinkIcon` | `false` | 是否在外部链接旁边显示 🔗 图标，`false` 表示不显示 |
+
+   ###### ② config数组
+
+   **hero区块配置**
+
+   | 配置项      | 值          | 说明                                                         |
+   | :---------- | :---------- | :----------------------------------------------------------- |
+   | `type`      | `hero`      | 英雄区类型，通常是页面最上方的大标题区域                     |
+   | `full`      | `true`      | 是否全屏宽度显示，`true` 表示占满整个视口宽度                |
+   | `forceDark` | `true`      | 强制使用深色模式，不受系统/主题设置影响                      |
+   | `effect`    | `lightning` | 特效类型，目前支持： - `lightning`：闪电/粒子特效 - 可能还有其他特效值 |
+
+   **hero对象**
+
+   | 配置项    | 值                    | 说明                              |
+   | :-------- | :-------------------- | :-------------------------------- |
+   | `name`    | `Theme Plume`         | 网站/品牌名称，通常是大号字体显示 |
+   | `tagline` | `VuePress Next Theme` | 标语，显示在名称下方              |
+   | `text`    | 一个简约的...         | 详细的描述文字                    |
+   | `actions` | 数组                  | 操作按钮列表                      |
+
+   **actions按钮配置**
+
+   | 配置项  | 值               | 说明                                                         |
+   | :------ | :--------------- | :----------------------------------------------------------- |
+   | `theme` | `brand` 或 `alt` | 按钮样式主题： - `brand`：品牌色（通常是主题主色） - `alt`：次要/备用样式 |
+   | `text`  | 字符串           | 按钮上显示的文本                                             |
+   | `link`  | URL              | 按钮点击后的跳转链接                                         |
+
+   修改示范
+
+   ```yaml
+   ---
+   pageLayout: home
+   externalLinkIcon: false
+   config:
+     -
+       type: hero
+       full: true
+       forceDark: false
+       effect: lightning
+       effectConfig:
+         hue: 235
+         xOffset: 0
+         speed: 0.8
+         intensity: 1
+         size: 1
+       hero:
+         name: Trace - 痕迹
+         tagline:  From Learning to Building
+         text: 一路写下的，不只是笔记，而是成长的痕迹
+         actions:
+           -
+             theme: brand
+             text: 开始
+             link: /blog/
+           -
+             theme: sponsor
+             text: Github →
+             link: https://github.com/freedom-thinking
+     -
+    ---
+   ```
+
+   
+
+   
+
+   ###### ③ 修改背景特效类型
+
+   主题对 **首页** 的 **Hero** 部分，内置了一系列 **炫酷好看** 的背景效果， 通过简单的配置即可应用到你的站点首页中：
+
+   
 
 2. 
 

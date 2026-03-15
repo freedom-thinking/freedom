@@ -11,7 +11,6 @@ export default defineNavbarConfig([
   { text: '博客', link: '/blog/' },
   { text: '项目', link: '/project/' },
   { text: '随笔', link: '/personal/' },
-  { text: '技术', link: '/technology/' },
   { text: '面试', link: '/interview/' },
   { text: '简历', link: '/resume/' },
   // { text: '标签', link: '/blog/tags/' },
@@ -24,6 +23,7 @@ export default defineNavbarConfig([
       { text: '博客网站搭建', link: '/note/零基础如何搭建个人博客网站/README.md' },
       { text: 'JAVA', link: '/note/JAVA/README.md' },
       { text: 'CAD入门', link: '/note/CAD入门/README.md' },
+      { text: '单片机', link: '/note/单片机/README.md' },
     ]
   },
 ])

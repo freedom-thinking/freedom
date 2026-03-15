@@ -8,6 +8,8 @@ permalink: /note/Node.js/
 1、浏览器中JavaScript的组成部分
 
 JavaScript 核心组成部分
+
+```elm
 **├─ ECMAScript (语言基础)**
 │  ├─ 语法规范
 │  │  ├─ 变量声明 (var/let/const)
@@ -71,6 +73,7 @@ JavaScript 核心组成部分
    └─ 安全机制
       ├─ 同源策略
       └─ CORS跨域
+```
 
 2、为什么JavaScript可以在浏览器中被执行？
 
