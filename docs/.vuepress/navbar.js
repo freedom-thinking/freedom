@@ -8,7 +8,6 @@ import { defineNavbarConfig } from 'vuepress-theme-plume'
 
 export default defineNavbarConfig([
   { text: '首页', link: '/' },
-  { text: '博客', link: '/blog/' },
   { text: '项目', link: '/project/' },
   { text: '随笔', link: '/personal/' },
   { text: '面试', link: '/interview/' },
@@ -24,6 +23,8 @@ export default defineNavbarConfig([
       { text: 'JAVA', link: '/note/JAVA/README.md' },
       { text: 'CAD入门', link: '/note/CAD入门/README.md' },
       { text: '单片机', link: '/note/单片机/README.md' },
+      { text: 'Python数据分析', link: '/note/Python数据分析/README.md' },
+      { text: '爬虫', link: '/note/爬虫/README.md' },
     ]
   },
 ])
