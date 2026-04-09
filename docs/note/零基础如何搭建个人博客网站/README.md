@@ -278,31 +278,31 @@ Plume主题 如下图所示
 
    ###### ② config数组
 
-   **hero区块配置**
+   - **hero区块配置**
 
-   | 配置项      | 值          | 说明                                                         |
-   | :---------- | :---------- | :----------------------------------------------------------- |
-   | `type`      | `hero`      | 英雄区类型，通常是页面最上方的大标题区域                     |
-   | `full`      | `true`      | 是否全屏宽度显示，`true` 表示占满整个视口宽度                |
-   | `forceDark` | `true`      | 强制使用深色模式，不受系统/主题设置影响                      |
-   | `effect`    | `lightning` | 特效类型，目前支持： - `lightning`：闪电/粒子特效 - 可能还有其他特效值 |
+     | 配置项      | 值          | 说明                                                         |
+     | :---------- | :---------- | :----------------------------------------------------------- |
+     | `type`      | `hero`      | 英雄区类型，通常是页面最上方的大标题区域                     |
+     | `full`      | `true`      | 是否全屏宽度显示，`true` 表示占满整个视口宽度                |
+     | `forceDark` | `true`      | 强制使用深色模式，不受系统/主题设置影响                      |
+     | `effect`    | `lightning` | 特效类型，目前支持： - `lightning`：闪电/粒子特效 - 可能还有其他特效值 |
 
-   **hero对象**
+   - **hero对象**
 
-   | 配置项    | 值                    | 说明                              |
-   | :-------- | :-------------------- | :-------------------------------- |
-   | `name`    | `Theme Plume`         | 网站/品牌名称，通常是大号字体显示 |
-   | `tagline` | `VuePress Next Theme` | 标语，显示在名称下方              |
-   | `text`    | 一个简约的...         | 详细的描述文字                    |
-   | `actions` | 数组                  | 操作按钮列表                      |
+     | 配置项    | 值                    | 说明                              |
+     | :-------- | :-------------------- | :-------------------------------- |
+     | `name`    | `Theme Plume`         | 网站/品牌名称，通常是大号字体显示 |
+     | `tagline` | `VuePress Next Theme` | 标语，显示在名称下方              |
+     | `text`    | 一个简约的...         | 详细的描述文字                    |
+     | `actions` | 数组                  | 操作按钮列表                      |
 
-   **actions按钮配置**
+   - **actions按钮配置**
 
-   | 配置项  | 值               | 说明                                                         |
-   | :------ | :--------------- | :----------------------------------------------------------- |
-   | `theme` | `brand` 或 `alt` | 按钮样式主题： - `brand`：品牌色（通常是主题主色） - `alt`：次要/备用样式 |
-   | `text`  | 字符串           | 按钮上显示的文本                                             |
-   | `link`  | URL              | 按钮点击后的跳转链接                                         |
+     | 配置项  | 值               | 说明                                                         |
+     | :------ | :--------------- | :----------------------------------------------------------- |
+     | `theme` | `brand` 或 `alt` | 按钮样式主题： - `brand`：品牌色（通常是主题主色） - `alt`：次要/备用样式 |
+     | `text`  | 字符串           | 按钮上显示的文本                                             |
+     | `link`  | URL              | 按钮点击后的跳转链接                                         |
 
    修改示范
 
@@ -339,15 +339,157 @@ Plume主题 如下图所示
     ---
    ```
 
-   
-
-   
-
    ###### ③ 修改背景特效类型
 
    主题对 **首页** 的 **Hero** 部分，内置了一系列 **炫酷好看** 的背景效果， 通过简单的配置即可应用到你的站点首页中：
 
-   
+   - 强制深色模式
+
+     大部分背景效果在深色模式下表现更加出色，因此建议开启深色模式以获得最佳体验。但对于部分文档，也许浅色模式才是你想要的，因此主题在 `hero` 中提供了 `forceDark` 选项，仅强制将首页强制变为深色模式，而不影响其他页面的颜色模式。
+
+     ```yaml
+     pageLayout: home
+     home: true
+     config:
+      -
+         forceDark: true
+     ```
+
+   - 背景动态效果
+
+     - tint-plate
+
+       效果预览
+
+       <img src="../static/build_blog/13.png">
+
+       使用方法
+
+       ```yaml
+       pageLayout: home
+       home: true
+       config:
+        -
+           type: hero
+           full: true
+           effect: tint-plate
+       ```
+
+       配置项
+
+       配置为单个值时，表示配置 red,green,blue 三个颜色值为相同值，范围： 0 - 255。示例： `210`。
+
+       配置为三个值时，表示配置 red,green,blue 三个颜色值为不同值，范围： 0 - 255。示例： `210,210,210`。
+
+       配置为 `TintPlate`，则可以更加灵活的控制每个颜色值和对应的偏移量。
+
+       还可以配置为 `{ light: TintPlate, dark: TintPlate }`，在深色模式和浅色模式下使用不同的颜色值。
+
+     - prism
+
+       预览效果
+
+       <img src="../static/build_blog/14.png">
+
+       安装依赖
+
+       ```sh
+       npm i ogl
+       ```
+
+       使用方法
+
+       ```yaml
+       ---
+       pageLayout: home
+       home: true
+       config:
+        -
+           type: hero
+           full: true
+           effect: prism
+       ---
+       ```
+
+     - pixel-blast
+
+       预览效果
+
+       <img src="../static/build_blog/15.png">
+
+       安装依赖
+
+       ```shell
+       npm i three postprocessing
+       ```
+
+       使用方法
+
+       ```yaml
+       ---
+       pageLayout: home
+       home: true
+       config:
+        -
+           type: hero
+           full: true
+           effect: pixel-blast
+       ---
+       ```
+
+     - htper-speed
+
+       效果预览
+
+       <img src="../static/build_blog/16.png">
+
+       安装依赖
+
+       ```sh
+       npm i three postprocessing
+       ```
+
+       使用方法
+
+       ```yaml
+       ---
+       pageLayout: home
+       home: true
+       config:
+        -
+           type: hero
+           full: true
+           effect: hyper-speed
+       ---
+       ```
+
+     - liguid-ether
+
+       预览效果
+
+       <img src="../static/build_blog/17.png">
+
+       安装依赖
+
+       ```sh
+       npm i three
+       ```
+
+       使用方法
+
+       ```yaml
+       ---
+       pageLayout: home
+       home: true
+       config:
+        -
+           type: hero
+           full: true
+           effect: liquid-ether
+       ---
+       ```
+
+       
 
 2. 
 

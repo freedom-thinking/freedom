@@ -6,13 +6,14 @@ config:
     type: hero
     full: true
     forceDark: false
-    effect: lightning
+    effect: beams
     effectConfig:
-      hue: 235
-      xOffset: 0
-      speed: 0.8
-      intensity: 1
-      size: 1
+      lightColor: '#3fbde4'
+      beamWidth: 3
+      noiseIntensity: 1.7
+      speed: 3
+      beamNumber: 15
+
     hero:
       name: Trace - 痕迹
       tagline:  From Learning to Building
@@ -77,4 +78,6 @@ config:
         icon: 📝
         details: 支持 Markdown 语法，支持 代码块分组、提示容器、任务列表、数学公式、代码演示等
 ---
+
+
 
