@@ -9,6 +9,10 @@ on:
   # Manually trigger deployment
   workflow_dispatch:
 
+# 允许内置 GITHUB_TOKEN 推送 blog-pages 分支
+permissions:
+  contents: write
+
 jobs:
   docs:
     runs-on: ubuntu-latest
@@ -46,10 +50,11 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v4
         with:
-          # 部署到 gh-pages 分支
+          # 部署到 blog-pages 分支（GitHub Pages 源分支，勿改）
           target_branch: blog-pages
           # 部署目录为 VuePress 的默认输出目录
           build_dir: docs/.vuepress/dist
         env:
+          # 使用内置 GITHUB_TOKEN：无需自建 secret、不会过期
           # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
-          GITHUB_TOKEN: ${{ secrets.ACCEESS_TOCKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
