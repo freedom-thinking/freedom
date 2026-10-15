@@ -21,7 +21,7 @@ export default defineUserConfig({
 
   head: [
     // 配置站点图标
-    ['link', { rel: 'icon', type: 'image/png', href: 'smallSheep.svg' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: 'smallSheep.svg' }],
   ],
 
   bundler: webpackBundler(),
@@ -32,7 +32,7 @@ export default defineUserConfig({
     // configFile: path.join(__dirname, 'custom/config.ts'), 
   
     /* 添加您的部署域名, 有助于 SEO, 生成 sitemap */
-    hostname: 'https://github.com/freedom-thinking/freedom',
+    hostname: 'https://freedom-thinking.github.io',
 
     /* 文档仓库配置，用于 editLink */
     // docsRepo: '',
@@ -178,7 +178,6 @@ export default defineUserConfig({
     // }
 
     // 页脚
-    footer: 'MIT Licensed | Copyright © 2026-至今 freedom-thinking',
     displayFooter: true,
   }),
 })

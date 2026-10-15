@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>加油鸭考研平台 - UI 原型</title>
+<style>
+  :root{
+    --brand:#FF7A3D;        /* 主橙 */
+    --brand-deep:#F0561B;
+    --blue:#2E6BE6;
+    --green:#22C55E;
+    --bg:#F6F7FB;
+    --card:#FFFFFF;
+    --text:#1F2937;
+    --text-sub:#6B7280;
+    --line:#EEF0F4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--text);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  /* ============ 顶部导航 ============ */
+  .nav{
+    height:64px;background:#fff;position:sticky;top:0;z-index:50;
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .nav-inner{width:100%;max-width:1200px;padding:0 24px;display:flex;align-items:center;gap:36px;}
+  .logo{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:800;letter-spacing:.5px;}
+  .logo .duck{width:34px;height:34px;flex-shrink:0;}
+  .logo b{color:var(--brand);}
+  .menu{display:flex;gap:28px;font-size:15px;}
+  .menu a{color:#4B5563;padding:6px 2px;border-bottom:2px solid transparent;transition:.15s;cursor:pointer;}
+  .menu a:hover{color:var(--brand);}
+  .menu a.active{color:var(--brand);font-weight:600;border-bottom-color:var(--brand);}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+  .search{
+    display:flex;align-items:center;gap:8px;background:#F3F4F6;border-radius:18px;
+    padding:8px 14px;width:200px;color:#9CA3AF;font-size:13px;
+  }
+  .avatar{
+    width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FFB48A,#FF7A3D);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;
+  }
+  /* ============ 页面容器 ============ */
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px;}
+  .page{display:none;}
+  .page.active{display:block;animation:fadein .25s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .sec-title{display:flex;align-items:center;justify-content:space-between;margin:36px 0 18px;}
+  .sec-title h2{font-size:20px;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:9px;}
+  .sec-title h2::before{content:"";width:4px;height:19px;background:var(--brand);border-radius:2px;}
+  .sec-title .more{font-size:13px;color:var(--text-sub);cursor:pointer;}
+  .sec-title .more:hover{color:var(--brand);}
+  /* ============ 首页 Hero ============ */
+  .hero{
+    margin-top:26px;border-radius:20px;overflow:hidden;position:relative;
+    background:linear-gradient(120deg,#FFF1E6 0%,#FFE7D6 55%,#FFDCC4 100%);
+    padding:44px 48px;display:flex;align-items:center;
+    min-height:270px;
+  }
+  .hero::before{content:"";position:absolute;right:-60px;top:-70px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.45);}
+  .hero::after{content:"";position:absolute;right:110px;bottom:-90px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.3);}
+  .hero-left{position:relative;z-index:2;max-width:560px;}
+  .countdown{
+    display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.75);
+    padding:7px 16px;border-radius:999px;font-size:13px;color:var(--brand-deep);font-weight:600;margin-bottom:20px;
+  }
+  .countdown b{font-size:17px;color:var(--brand-deep);}
+  .hero h1{font-size:38px;line-height:1.3;font-weight:800;letter-spacing:1px;color:#3A2416;}
+  .hero h1 em{font-style:normal;color:var(--brand-deep);}
+  .hero p{margin-top:14px;font-size:14.5px;color:#8A6A55;line-height:1.7;max-width:470px;}
+  .hero-btns{display:flex;gap:14px;margin-top:26px;}
+  .btn{padding:12px 28px;border-radius:10px;font-size:15px;font-weight:600;transition:.15s;}
+  .btn.primary{background:var(--brand);color:#fff;box-shadow:0 6px 16px rgba(255,122,61,.35);}
+  .btn.primary:hover{background:var(--brand-deep);}
+  .btn.ghost{background:#fff;color:var(--brand-deep);box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .hero .mascot{position:absolute;right:56px;bottom:0;width:230px;z-index:2;}
+  /* ============ 快捷入口 ============ */
+  .quick{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:22px;}
+  .quick .q{
+    background:#fff;border-radius:16px;padding:22px 18px;text-align:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.04);transition:.18s;cursor:pointer;border:1px solid transparent;
+  }
+  .quick .q:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(255,122,61,.14);border-color:#FFD9C4;}
+  .quick .q .ic{width:52px;height:52px;border-radius:14px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;}
+  .quick .q .ic svg{width:27px;height:27px;}
+  .quick .q .t{font-size:15px;font-weight:700;}
+  .quick .q .d{font-size:12px;color:var(--text-sub);margin-top:5px;}
+  .ic.i1{background:#FFF1E6;} .ic.i1 svg{fill:var(--brand);}
+  .ic.i2{background:#E8F0FF;} .ic.i2 svg{fill:var(--blue);}
+  .ic.i3{background:#E7F8EE;} .ic.i3 svg{fill:var(--green);}
+  .ic.i4{background:#F3EDFF;} .ic.i4 svg{fill:#7C5CE6;}
+  .ic.i5{background:#FFF0F3;} .ic.i5 svg{fill:#F0568A;}
+  /* ============ 通用卡片 ============ */
+  .card{background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .two-col{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;}
+  /* 资讯列表 */
+  .news{padding:8px 24px;}
+  .news .item{display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);}
+  .news .item:last-child{border-bottom:none;}
+  .news .tag{font-size:11px;padding:3px 9px;border-radius:6px;background:#FFF1E6;color:var(--brand-deep);font-weight:600;flex-shrink:0;}
+  .news .tag.b{background:#E8F0FF;color:var(--blue);}
+  .news .tag.g{background:#E7F8EE;color:#15803D;}
+  .news .tt{font-size:14.5px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;}
+  .news .tt:hover{color:var(--brand);}
+  .news .date{font-size:12.5px;color:#9CA3AF;flex-shrink:0;}
+  /* 热门院校 */
+  .school-mini{padding:8px 20px;}
+  .school-mini .s{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);}
+  .school-mini .s:last-child{border-bottom:none;}
+  .school-mini .rank{width:24px;height:24px;border-radius:7px;background:#F3F4F6;color:#6B7280;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .school-mini .s:nth-child(1) .rank{background:var(--brand);color:#fff;}
+  .school-mini .s:nth-child(2) .rank{background:#FFB48A;color:#fff;}
+  .school-mini .s:nth-child(3) .rank{background:#FFD9C4;color:var(--brand-deep);}
+  .school-mini .nm{font-size:14px;flex:1;}
+  .school-mini .rate{font-size:12px;color:var(--text-sub);}
+  .school-mini .rate b{color:var(--brand);}
+  /* ============ 院校库 ============ */
+  .filter{background:#fff;border-radius:16px;padding:20px 24px;margin-top:26px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .filter .row{display:flex;align-items:flex-start;gap:14px;padding:9px 0;}
+  .filter .row .lb{font-size:13.5px;color:var(--text-sub);width:64px;flex-shrink:0;padding-top:3px;}
+  .filter .opts{display:flex;flex-wrap:wrap;gap:9px;}
+  .filter .opts span{font-size:13px;padding:5px 14px;border-radius:8px;color:#4B5563;cursor:pointer;transition:.15s;}
+  .filter .opts span:hover{color:var(--brand);}
+  .filter .opts span.on{background:#FFF1E6;color:var(--brand-deep);font-weight:600;}
+  .school-list{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;margin-bottom:40px;}
+  .school-card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 2px 10px rgba(0,0,0,.04);transition:.18s;cursor:pointer;}
+  .school-card:hover{box-shadow:0 10px 26px rgba(0,0,0,.08);transform:translateY(-2px);}
+  .school-card .head{display:flex;align-items:center;gap:13px;}
+  .school-card .badge{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#FF9A63,#FF6B35);color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .school-card .nm{font-size:16.5px;font-weight:700;}
+  .school-card .sub{font-size:12.5px;color:var(--text-sub);margin-top:3px;}
+  .school-card .labels{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap;}
+  .school-card .labels span{font-size:11.5px;padding:3px 9px;border-radius:6px;background:#F3F4F6;color:#6B7280;}
+  .school-card .labels span.hot{background:#FFF1E6;color:var(--brand-deep);}
+  .school-card .labels span.b{background:#E8F0FF;color:var(--blue);}
+  .school-card .stats{display:flex;gap:0;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
+  .school-card .stats div{flex:1;text-align:center;border-right:1px solid var(--line);}
+  .school-card .stats div:last-child{border-right:none;}
+  .school-card .stats .v{font-size:16px;font-weight:700;color:var(--brand);}
+  .school-card .stats .k{font-size:11.5px;color:var(--text-sub);margin-top:3px;}
+  /* ============ 题库 ============ */
+  .quiz-wrap{display:grid;grid-template-columns:1fr 300px;gap:20px;margin-top:26px;margin-bottom:40px;}
+  .quiz-main{background:#fff;border-radius:16px;padding:32px 36px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .quiz-head{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line);}
+  .quiz-head .badge{font-size:12px;padding:4px 12px;border-radius:7px;background:#FFF1E6;color:var(--brand-deep);font-weight:600;}
+  .quiz-head .badge.b{background:#E8F0FF;color:var(--blue);}
+  .quiz-head .pg{margin-left:auto;font-size:13px;color:var(--text-sub);}
+  .quiz-head .pg b{color:var(--brand);font-size:15px;}
+  .q-stem{font-size:17px;line-height:1.8;font-weight:600;margin-bottom:24px;}
+  .q-stem .num{color:var(--brand);}
+  .options{display:flex;flex-direction:column;gap:13px;}
+  .opt{
+    display:flex;align-items:center;gap:14px;padding:15px 20px;border-radius:12px;
+    border:1.5px solid var(--line);cursor:pointer;transition:.15s;font-size:14.5px;
+  }
+  .opt:hover{border-color:#FFC9A8;background:#FFFBF8;}
+  .opt .key{
+    width:28px;height:28px;border-radius:50%;background:#F3F4F6;color:#6B7280;
+    font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .opt.sel{border-color:var(--brand);background:#FFF6F0;}
+  .opt.sel .key{background:var(--brand);color:#fff;}
+  .quiz-actions{display:flex;gap:12px;margin-top:28px;}
+  .quiz-actions .btn{padding:11px 30px;}
+  /* 答题卡 */
+  .answer-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.04);height:fit-content;}
+  .answer-card h3{font-size:15px;font-weight:700;margin-bottom:6px;}
+  .answer-card .hint{font-size:12px;color:var(--text-sub);margin-bottom:18px;}
+  .answer-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;}
+  .answer-grid .n{
+    aspect-ratio:1;border-radius:8px;background:#F3F4F6;color:#6B7280;font-size:13px;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;
+  }
+  .answer-grid .n.done{background:#E7F8EE;color:#15803D;}
+  .answer-grid .n.wrong{background:#FFE9E9;color:#DC2626;}
+  .answer-grid .n.cur{background:var(--brand);color:#fff;font-weight:700;}
+  .answer-legend{display:flex;gap:16px;margin-top:18px;font-size:12px;color:var(--text-sub);}
+  .answer-legend span{display:flex;align-items:center;gap:5px;}
+  .answer-legend i{width:12px;height:12px;border-radius:3px;display:inline-block;}
+  /* ============ 学习计划 ============ */
+  .plan-wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-top:26px;margin-bottom:40px;}
+  .cal{background:#fff;border-radius:16px;padding:26px 28px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .cal-head .m{font-size:17px;font-weight:700;}
+  .cal-head .streak{font-size:13px;color:var(--brand-deep);background:#FFF1E6;padding:6px 14px;border-radius:999px;font-weight:600;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+  .cal-grid .wd{text-align:center;font-size:12px;color:var(--text-sub);padding-bottom:6px;}
+  .cal-grid .day{
+    aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    border-radius:10px;font-size:13.5px;color:#4B5563;position:relative;
+  }
+  .cal-grid .day.mute{color:#D1D5DB;}
+  .cal-grid .day.done{background:#E7F8EE;color:#15803D;font-weight:600;}
+  .cal-grid .day.today{background:var(--brand);color:#fff;font-weight:700;}
+  .task-card{background:#fff;border-radius:16px;padding:26px 28px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .task-card h3{font-size:16px;font-weight:700;margin-bottom:4px;}
+  .task-card .prog{font-size:12.5px;color:var(--text-sub);margin-bottom:18px;}
+  .task{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--line);}
+  .task:last-child{border-bottom:none;}
+  .task .box{width:22px;height:22px;border-radius:7px;border:2px solid #D1D5DB;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .task.done .box{background:var(--green);border-color:var(--green);}
+  .task .box svg{width:13px;height:13px;fill:#fff;display:none;}
+  .task.done .box svg{display:block;}
+  .task .txt{font-size:14px;flex:1;}
+  .task.done .txt{color:#9CA3AF;text-decoration:line-through;}
+  .task .meta{font-size:12px;color:#9CA3AF;}
+  .plan-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
+  .plan-stats .st{background:#fff;border-radius:14px;padding:18px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .plan-stats .st .v{font-size:24px;font-weight:800;color:var(--brand);}
+  .plan-stats .st .k{font-size:12.5px;color:var(--text-sub);margin-top:5px;}
+  /* ============ 资料库 ============ */
+  .tabs{display:flex;gap:10px;margin:26px 0 18px;}
+  .tabs span{font-size:14px;padding:8px 20px;border-radius:10px;background:#fff;color:#4B5563;cursor:pointer;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.03);}
+  .tabs span.on{background:var(--brand);color:#fff;font-weight:600;box-shadow:0 6px 16px rgba(255,122,61,.3);}
+  .mat-list{background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);overflow:hidden;margin-bottom:40px;}
+  .mat{display:flex;align-items:center;gap:18px;padding:20px 26px;border-bottom:1px solid var(--line);transition:.15s;}
+  .mat:last-child{border-bottom:none;}
+  .mat:hover{background:#FFFBF8;}
+  .mat .ficon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;color:#fff;}
+  .mat .ficon.pdf{background:#E8593D;} .mat .ficon.doc{background:var(--blue);} .mat .ficon.zip{background:#7C5CE6;}
+  .mat .info{flex:1;min-width:0;}
+  .mat .info .t{font-size:15px;font-weight:600;margin-bottom:5px;cursor:pointer;}
+  .mat .info .t:hover{color:var(--brand);}
+  .mat .info .m{font-size:12.5px;color:var(--text-sub);display:flex;gap:14px;}
+  .mat .dl{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--brand);font-weight:600;padding:8px 18px;border-radius:9px;background:#FFF1E6;flex-shrink:0;}
+  .mat .dl:hover{background:#FFE4D3;}
+  /* ============ 社区 ============ */
+  .forum-wrap{display:grid;grid-template-columns:1fr 300px;gap:20px;margin-top:26px;margin-bottom:40px;}
+  .post-list{background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);overflow:hidden;}
+  .post{display:flex;gap:16px;padding:22px 26px;border-bottom:1px solid var(--line);}
+  .post:last-child{border-bottom:none;}
+  .post:hover{background:#FFFBF8;}
+  .post .pa{width:44px;height:44px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;}
+  .post .pc{flex:1;min-width:0;}
+  .post .pt{font-size:15.5px;font-weight:600;margin-bottom:8px;cursor:pointer;}
+  .post .pt:hover{color:var(--brand);}
+  .post .pmeta{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--text-sub);}
+  .post .pmeta .ptag{font-size:11px;padding:2px 8px;border-radius:5px;background:#F3F4F6;color:#6B7280;}
+  .post .pstat{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;font-size:12.5px;color:#9CA3AF;}
+  .post .pstat .rep{color:var(--brand);font-weight:600;}
+  .side-card{background:#fff;border-radius:16px;padding:22px 24px;box-shadow:0 2px 10px rgba(0,0,0,.04);margin-bottom:18px;}
+  .side-card h3{font-size:14.5px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .side-card h3::before{content:"";width:3px;height:15px;background:var(--brand);border-radius:2px;}
+  .hot{display:flex;align-items:center;gap:11px;padding:9px 0;font-size:13.5px;cursor:pointer;}
+  .hot:hover{color:var(--brand);}
+  .hot .rk{width:18px;font-size:14px;font-weight:800;color:#D1D5DB;font-style:italic;}
+  .hot:nth-child(1) .rk,.hot:nth-child(2) .rk,.hot:nth-child(3) .rk{color:var(--brand);}
+  .side-card .newbtn{width:100%;padding:12px;border-radius:10px;background:var(--brand);color:#fff;font-size:14px;font-weight:600;box-shadow:0 6px 16px rgba(255,122,61,.3);}
+  /* ============ 页脚 ============ */
+  .footer{background:#fff;border-top:1px solid var(--line);padding:32px 0;margin-top:20px;}
+  .footer .wrap{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#9CA3AF;}
+  .footer .lk{display:flex;gap:24px;}
+  /* 侧栏操作条 */
+  .page-wrap{padding-bottom:20px;}
+</style>
+</head>
+<body>
+
+<!-- ============ 导航 ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <svg class="duck" viewBox="0 0 64 64">
+        <ellipse cx="32" cy="40" rx="22" ry="17" fill="#FFB020"/>
+        <ellipse cx="32" cy="42" rx="19" ry="12" fill="#FFC94D"/>
+        <circle cx="42" cy="24" r="13" fill="#FFC94D"/>
+        <circle cx="42" cy="24" r="13" fill="none" stroke="#FFB020" stroke-width="0"/>
+        <path d="M53 24 l9 3 l-9 3 z" fill="#FF7A3D"/>
+        <circle cx="45" cy="21" r="2.6" fill="#3A2416"/>
+        <circle cx="45.8" cy="20.2" r=".9" fill="#fff"/>
+        <path d="M18 30 q6 -6 12 -1 q-6 4 -12 1z" fill="#FFD980"/>
+      </svg>
+      <span>加油鸭<b>考研</b></span>
+    </div>
+    <div class="menu">
+      <a class="active" data-p="home" onclick="go('home',this)">首页</a>
+      <a data-p="school" onclick="go('school',this)">院校库</a>
+      <a data-p="quiz" onclick="go('quiz',this)">题库</a>
+      <a data-p="plan" onclick="go('plan',this)">学习计划</a>
+      <a data-p="material" onclick="go('material',this)">资料库</a>
+      <a data-p="community" onclick="go('community',this)">社区</a>
+    </div>
+    <div class="nav-right">
+      <div class="search">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="#9CA3AF"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        搜院校 / 题目 / 资料
+      </div>
+      <div class="avatar">鸭</div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<div class="wrap">
+
+<!-- ==================== 首页 ==================== -->
+<section class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="countdown">🎯 距 2027 考研初试还有 <b>72</b> 天</div>
+      <h1>一个人，也要像<em>一支队伍</em></h1>
+      <p>院校、真题、刷题、计划、资料、研友，都在这里。备考路上少折腾，把时间留给真正重要的复习。</p>
+      <div class="hero-btns">
+        <button class="btn primary" onclick="go('quiz',document.querySelector('.menu a[data-p=quiz]'))">开始刷题</button>
+        <button class="btn ghost" onclick="go('school',document.querySelector('.menu a[data-p=school]'))">浏览院校库</button>
+      </div>
+    </div>
+    <!-- 吉祥物 -->
+    <svg class="mascot" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="175" rx="60" ry="12" fill="#F5D9BE" opacity=".6"/>
+      <ellipse cx="100" cy="120" rx="56" ry="44" fill="#FFB020"/>
+      <ellipse cx="100" cy="126" rx="47" ry="32" fill="#FFCF5C"/>
+      <circle cx="126" cy="70" r="34" fill="#FFCF5C"/>
+      <path d="M156 68 l24 8 l-24 8 z" fill="#FF7A3D"/>
+      <circle cx="135" cy="62" r="7" fill="#3A2416"/>
+      <circle cx="137" cy="59.5" r="2.4" fill="#fff"/>
+      <path d="M46 104 q16 -18 34 -4 q-16 12 -34 4z" fill="#FFD980"/>
+      <path d="M60 96 q-4 -14 6 -20" stroke="#FFB020" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="quick">
+    <div class="q" onclick="go('school',document.querySelector('.menu a[data-p=school]'))">
+      <div class="ic i1"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg></div>
+      <div class="t">院校库</div><div class="d">查报录比 · 分数线</div>
+    </div>
+    <div class="q" onclick="go('quiz',document.querySelector('.menu a[data-p=quiz]'))">
+      <div class="ic i2"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
+      <div class="t">题库刷题</div><div class="d">真题 · 错题本</div>
+    </div>
+    <div class="q" onclick="go('plan',document.querySelector('.menu a[data-p=plan]'))">
+      <div class="ic i3"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg></div>
+      <div class="t">学习计划</div><div class="d">每日打卡 · 统计</div>
+    </div>
+    <div class="q" onclick="go('material',document.querySelector('.menu a[data-p=material]'))">
+      <div class="ic i4"><svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg></div>
+      <div class="t">资料库</div><div class="d">真题 · 笔记 · 课件</div>
+    </div>
+    <div class="q" onclick="go('community',document.querySelector('.menu a[data-p=community]'))">
+      <div class="ic i5"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg></div>
+      <div class="t">研友社区</div><div class="d">答疑 · 经验帖</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="sec-title"><h2>考研资讯</h2><span class="more">更多 ›</span></div>
+      <div class="card news">
+        <div class="item"><span class="tag">招生</span><span class="tt">2027 考研各省报名时间汇总，多省已公布网上确认安排</span><span class="date">10-14</span></div>
+        <div class="item"><span class="tag b">大纲</span><span class="tt">思想政治理论考试大纲对比解读：今年这 3 处有变化</span><span class="date">10-12</span></div>
+        <div class="item"><span class="tag g">经验</span><span class="tt">二战上岸学姐：我把复习拆成了这 4 个阶段</span><span class="date">10-10</span></div>
+        <div class="item"><span class="tag">院校</span><span class="tt">某 211 公布最新报录比，这个专业竞争翻了一倍</span><span class="date">10-09</span></div>
+        <div class="item"><span class="tag b">政策</span><span class="tt">推免名额变化对统考考生的影响，一篇说清</span><span class="date">10-07</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-title"><h2>热门院校</h2><span class="more">全部 ›</span></div>
+      <div class="card school-mini">
+        <div class="s"><span class="rank">1</span><span class="nm">华南理工大学</span><span class="rate">报录比 <b>6.2:1</b></span></div>
+        <div class="s"><span class="rank">2</span><span class="nm">暨南大学</span><span class="rate">报录比 <b>7.8:1</b></span></div>
+        <div class="s"><span class="rank">3</span><span class="nm">深圳大学</span><span class="rate">报录比 <b>5.4:1</b></span></div>
+        <div class="s"><span class="rank">4</span><span class="nm">广东工业大学</span><span class="rate">报录比 <b>4.1:1</b></span></div>
+        <div class="s"><span class="rank">5</span><span class="nm">南方科技大学</span><span class="rate">报录比 <b>8.9:1</b></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 院校库 ==================== -->
+<section class="page" id="page-school">
+  <div class="filter">
+    <div class="row"><span class="lb">地区</span><div class="opts"><span class="on">全部</span><span>广东</span><span>北京</span><span>上海</span><span>江苏</span><span>湖北</span><span>四川</span></div></div>
+    <div class="row"><span class="lb">院校层次</span><div class="opts"><span class="on">不限</span><span>985</span><span>211</span><span>双一流</span><span>普通本科</span></div></div>
+    <div class="row"><span class="lb">专业方向</span><div class="opts"><span class="on">不限</span><span>计算机</span><span>电子信息</span><span>金融</span><span>法学</span><span>教育学</span></div></div>
+  </div>
+
+  <div class="sec-title"><h2>共 128 所院校</h2><span class="more">按报录比排序 ▾</span></div>
+
+  <div class="school-list">
+    <div class="school-card">
+      <div class="head"><div class="badge">华南</div><div><div class="nm">华南理工大学</div><div class="sub">广东广州 · 985 / 双一流</div></div></div>
+      <div class="labels"><span class="hot">热门</span><span>计算机强校</span><span class="b">专业课自命题</span></div>
+      <div class="stats"><div><div class="v">6.2:1</div><div class="k">报录比</div></div><div><div class="v">345</div><div class="k">复试线</div></div><div><div class="v">4.8万</div><div class="k">报考人数</div></div></div>
+    </div>
+    <div class="school-card">
+      <div class="head"><div class="badge">暨南</div><div><div class="nm">暨南大学</div><div class="sub">广东广州 · 211 / 双一流</div></div></div>
+      <div class="labels"><span class="hot">热门</span><span>新闻传播</span><span class="b">保护一志愿</span></div>
+      <div class="stats"><div><div class="v">7.8:1</div><div class="k">报录比</div></div><div><div class="v">352</div><div class="k">复试线</div></div><div><div class="v">3.6万</div><div class="k">报考人数</div></div></div>
+    </div>
+    <div class="school-card">
+      <div class="head"><div class="badge">深大</div><div><div class="nm">深圳大学</div><div class="sub">广东深圳 · 双一流</div></div></div>
+      <div class="labels"><span>性价比高</span><span>地理位置好</span><span class="b">复试公平</span></div>
+      <div class="stats"><div><div class="v">5.4:1</div><div class="k">报录比</div></div><div><div class="v">338</div><div class="k">复试线</div></div><div><div class="v">2.9万</div><div class="k">报考人数</div></div></div>
+    </div>
+    <div class="school-card">
+      <div class="head"><div class="badge">南科</div><div><div class="nm">南方科技大学</div><div class="sub">广东深圳 · 双一流</div></div></div>
+      <div class="labels"><span class="hot">热度上升</span><span>科研强</span><span class="b">导师制</span></div>
+      <div class="stats"><div><div class="v">8.9:1</div><div class="k">报录比</div></div><div><div class="v">360</div><div class="k">复试线</div></div><div><div class="v">1.2万</div><div class="k">报考人数</div></div></div>
+    </div>
+    <div class="school-card">
+      <div class="head"><div class="badge">广工</div><div><div class="nm">广东工业大学</div><div class="sub">广东广州 · 普通本科</div></div></div>
+      <div class="labels"><span>工科强</span><span>就业好</span><span class="b">过线即录概率高</span></div>
+      <div class="stats"><div><div class="v">4.1:1</div><div class="k">报录比</div></div><div><div class="v">325</div><div class="k">复试线</div></div><div><div class="v">2.4万</div><div class="k">报考人数</div></div></div>
+    </div>
+    <div class="school-card">
+      <div class="head"><div class="badge">中大</div><div><div class="nm">中山大学</div><div class="sub">广东广州 · 985 / 双一流</div></div></div>
+      <div class="labels"><span class="hot">顶尖</span><span>医学强</span><span class="b">复试权重高</span></div>
+      <div class="stats"><div><div class="v">9.6:1</div><div class="k">报录比</div></div><div><div class="v">365</div><div class="k">复试线</div></div><div><div class="v">5.2万</div><div class="k">报考人数</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 题库 ==================== -->
+<section class="page" id="page-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-main">
+      <div class="quiz-head">
+        <span class="badge">计算机网络</span>
+        <span class="badge b">单选题</span>
+        <span class="pg">第 <b>7</b> / 20 题</span>
+      </div>
+      <div class="q-stem"><span class="num">7.</span> 在 TCP/IP 协议族中，负责在不可靠的 IP 网络上提供可靠、面向连接的数据传输服务的协议是？</div>
+      <div class="options">
+        <div class="opt" onclick="pick(this)"><span class="key">A</span>UDP（用户数据报协议）</div>
+        <div class="opt sel" onclick="pick(this)"><span class="key">B</span>TCP（传输控制协议）</div>
+        <div class="opt" onclick="pick(this)"><span class="key">C</span>ICMP（网际控制报文协议）</div>
+        <div class="opt" onclick="pick(this)"><span class="key">D</span>ARP（地址解析协议）</div>
+      </div>
+      <div class="quiz-actions">
+        <button class="btn primary">提交答案</button>
+        <button class="btn ghost">加入错题本</button>
+      </div>
+    </div>
+    <div class="answer-card">
+      <h3>答题卡</h3>
+      <div class="hint">共 20 题 · 已完成 12 题</div>
+      <div class="answer-grid">
+        <div class="n done">1</div><div class="n done">2</div><div class="n done">3</div>
+        <div class="n wrong">4</div><div class="n done">5</div><div class="n done">6</div>
+        <div class="n cur">7</div><div class="n">8</div><div class="n">9</div>
+        <div class="n done">10</div><div class="n wrong">11</div><div class="n done">12</div>
+        <div class="n">13</div><div class="n">14</div><div class="n">15</div>
+        <div class="n">16</div><div class="n">17</div><div class="n">18</div>
+        <div class="n">19</div><div class="n">20</div>
+      </div>
+      <div class="answer-legend">
+        <span><i style="background:#E7F8EE"></i>已答对</span>
+        <span><i style="background:#FFE9E9"></i>已答错</span>
+        <span><i style="background:#FF7A3D"></i>当前题</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 学习计划 ==================== -->
+<section class="page" id="page-plan">
+  <div class="plan-wrap">
+    <div class="cal">
+      <div class="cal-head">
+        <div class="m">2026 年 10 月</div>
+        <div class="streak">🔥 连续打卡 23 天</div>
+      </div>
+      <div class="cal-grid">
+        <div class="wd">一</div><div class="wd">二</div><div class="wd">三</div><div class="wd">四</div><div class="wd">五</div><div class="wd">六</div><div class="wd">日</div>
+        <div class="day mute">29</div><div class="day mute">30</div><div class="day done">1</div><div class="day done">2</div><div class="day done">3</div><div class="day done">4</div><div class="day done">5</div>
+        <div class="day done">6</div><div class="day done">7</div><div class="day done">8</div><div class="day done">9</div><div class="day done">10</div><div class="day done">11</div><div class="day done">12</div>
+        <div class="day done">13</div><div class="day done">14</div><div class="day today">15</div><div class="day">16</div><div class="day">17</div><div class="day">18</div><div class="day">19</div>
+        <div class="day">20</div><div class="day">21</div><div class="day">22</div><div class="day">23</div><div class="day">24</div><div class="day">25</div><div class="day">26</div>
+        <div class="day">27</div><div class="day">28</div><div class="day">29</div><div class="day">30</div><div class="day">31</div>
+      </div>
+    </div>
+    <div>
+      <div class="task-card">
+        <h3>今日任务</h3>
+        <div class="prog">已完成 2 / 5 项</div>
+        <div class="task done"><div class="box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span class="txt">英语单词 50 个</span><span class="meta">已完成</span></div>
+        <div class="task done"><div class="box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span class="txt">政治视频课 1 节</span><span class="meta">已完成</span></div>
+        <div class="task"><div class="box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span class="txt">数学真题 1 套</span><span class="meta">待完成</span></div>
+        <div class="task"><div class="box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span class="txt">专业课背诵 2 章</span><span class="meta">待完成</span></div>
+        <div class="task"><div class="box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><span class="txt">错题本复习 20 题</span><span class="meta">待完成</span></div>
+      </div>
+      <div class="plan-stats">
+        <div class="st"><div class="v">23</div><div class="k">连续打卡</div></div>
+        <div class="st"><div class="v">186</div><div class="k">累计小时</div></div>
+        <div class="st"><div class="v">74%</div><div class="k">计划完成率</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 资料库 ==================== -->
+<section class="page" id="page-material">
+  <div class="tabs">
+    <span class="on">全部</span><span>历年真题</span><span>学长笔记</span><span>课件讲义</span><span>经验分享</span>
+  </div>
+  <div class="mat-list">
+    <div class="mat">
+      <div class="ficon pdf">PDF</div>
+      <div class="info"><div class="t">2026 考研英语一真题及答案解析（完整版）</div><div class="m"><span>上传：上岸小张</span><span>大小 3.2 MB</span><span>下载 2.4万</span></div></div>
+      <div class="dl"><svg viewBox="0 0 24 24" width="15" height="15" fill="#FF7A3D"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>下载</div>
+    </div>
+    <div class="mat">
+      <div class="ficon doc">DOC</div>
+      <div class="info"><div class="t">计算机网络 · 王道考研笔记（手写整理）</div><div class="m"><span>上传：努力鸭</span><span>大小 8.6 MB</span><span>下载 1.7万</span></div></div>
+      <div class="dl"><svg viewBox="0 0 24 24" width="15" height="15" fill="#FF7A3D"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>下载</div>
+    </div>
+    <div class="mat">
+      <div class="ficon pdf">PDF</div>
+      <div class="info"><div class="t">政治大纲变化对照表（2026 vs 2025）</div><div class="m"><span>上传：研途有你</span><span>大小 1.1 MB</span><span>下载 9312</span></div></div>
+      <div class="dl"><svg viewBox="0 0 24 24" width="15" height="15" fill="#FF7A3D"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>下载</div>
+    </div>
+    <div class="mat">
+      <div class="ficon zip">ZIP</div>
+      <div class="info"><div class="t">数学一 1987-2026 历年真题合集（含解析）</div><div class="m"><span>上传：数学课代表</span><span>大小 42 MB</span><span>下载 3.8万</span></div></div>
+      <div class="dl"><svg viewBox="0 0 24 24" width="15" height="15" fill="#FF7A3D"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>下载</div>
+    </div>
+    <div class="mat">
+      <div class="ficon doc">DOC</div>
+      <div class="info"><div class="t">二战上岸：我的 10 个月复习时间表</div><div class="m"><span>上传：小林同学</span><span>大小 0.6 MB</span><span>下载 1.2万</span></div></div>
+      <div class="dl"><svg viewBox="0 0 24 24" width="15" height="15" fill="#FF7A3D"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>下载</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 社区 ==================== -->
+<section class="page" id="page-community">
+  <div class="forum-wrap">
+    <div class="post-list">
+      <div class="post">
+        <div class="pa" style="background:linear-gradient(135deg,#FF9A63,#FF6B35)">张</div>
+        <div class="pc">
+          <div class="pt">数学三从 60 分提到 130 分，我做对了这几件事</div>
+          <div class="pmeta"><span>上岸小张</span><span>2 小时前</span><span class="ptag">经验帖</span><span class="ptag">数学</span></div>
+        </div>
+        <div class="pstat"><span class="rep">👍 328</span><span>💬 96</span></div>
+      </div>
+      <div class="post">
+        <div class="pa" style="background:linear-gradient(135deg,#6FA8FF,#2E6BE6)">李</div>
+        <div class="pc">
+          <div class="pt">专业课自命题到底怎么找真题？我把踩过的坑整理出来了</div>
+          <div class="pmeta"><span>努力鸭</span><span>5 小时前</span><span class="ptag">求助</span><span class="ptag">专业课</span></div>
+        </div>
+        <div class="pstat"><span class="rep">👍 156</span><span>💬 214</span></div>
+      </div>
+      <div class="post">
+        <div class="pa" style="background:linear-gradient(135deg,#7BE495,#22C55E)">王</div>
+        <div class="pc">
+          <div class="pt">10 月了才开始，还来得及吗？说说我去年这时候的状态</div>
+          <div class="pmeta"><span>不焦虑鸭</span><span>昨天</span><span class="ptag">交流</span><span class="ptag">心态</span></div>
+        </div>
+        <div class="pstat"><span class="rep">👍 512</span><span>💬 178</span></div>
+      </div>
+      <div class="post">
+        <div class="pa" style="background:linear-gradient(135deg,#B79CFF,#7C5CE6)">陈</div>
+        <div class="pc">
+          <div class="pt">有没有一起背政治的小伙伴？每天互相提问监督</div>
+          <div class="pmeta"><span>研友招募</span><span>昨天</span><span class="ptag">组队</span><span class="ptag">政治</span></div>
+        </div>
+        <div class="pstat"><span class="rep">👍 89</span><span>💬 132</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="side-card">
+        <h3>今日热榜</h3>
+        <div class="hot"><span class="rk">1</span>10 月才开始还来得及吗</div>
+        <div class="hot"><span class="rk">2</span>英语一的作文模板汇总</div>
+        <div class="hot"><span class="rk">3</span>哪些院校保护一志愿</div>
+        <div class="hot"><span class="rk">4</span>数学一和数学三的区别</div>
+        <div class="hot"><span class="rk">5</span>考研报名常见问题</div>
+      </div>
+      <div class="side-card">
+        <h3>我要发帖</h3>
+        <p style="font-size:13px;color:#6B7280;line-height:1.7;margin-bottom:16px;">分享经验、求助答疑、招募研友，都可以在这里说。</p>
+        <button class="newbtn">＋ 发布新帖</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<div class="footer">
+  <div class="wrap">
+    <div>加油鸭考研 · 让备考少一点折腾</div>
+    <div class="lk"><span>关于我们</span><span>意见反馈</span><span>免责声明</span></div>
+  </div>
+</div>
+
+<script>
+  function go(name, el){
+    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+    var target = document.getElementById('page-'+name);
+    if(target) target.classList.add('active');
+    document.querySelectorAll('.menu a').forEach(function(a){a.classList.remove('active')});
+    if(el && el.classList) el.classList.add('active');
+    window.scrollTo(0,0);
+  }
+  function pick(el){
+    el.parentNode.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel')});
+    el.classList.add('sel');
+  }
+  // hash 路由（供截图定位）
+  function applyHash(){
+    var h = location.hash.replace('#','');
+    if(h && document.getElementById('page-'+h)){
+      go(h, document.querySelector('.menu a[data-p="'+h+'"]'));
+    }
+  }
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
+</script>
+</body>
+</html>

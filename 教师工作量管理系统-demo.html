@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教师工作量管理系统</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #409eff;
+    --primary-dark: #337ecc;
+    --success: #67c23a;
+    --warning: #e6a23c;
+    --danger: #f56c6c;
+    --text: #303133;
+    --text-2: #606266;
+    --text-3: #909399;
+    --border: #e4e7ed;
+    --bg: #f0f2f5;
+    --menu-bg: #304156;
+    --menu-hover: #263445;
+    --menu-text: #bfcbd9;
+    --sidebar-w: 220px;
+    --sidebar-w-collapsed: 64px;
+    --topbar-h: 60px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .icon { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -3px; }
+
+  /* ================= 登录页 ================= */
+  #login-page {
+    position: fixed; inset: 0;
+    display: flex;
+    background: #fff;
+  }
+  .login-left {
+    flex: 1.1;
+    background-image:
+      linear-gradient(165deg, rgba(17,38,76,.88) 0%, rgba(32,68,122,.72) 55%, rgba(46,105,158,.55) 100%),
+      url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1400&q=80');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 8%;
+  }
+  .login-brand { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 600; margin-bottom: 40px; }
+  .login-brand .brand-logo {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: rgba(255,255,255,.22); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .login-brand .brand-logo .icon { width: 24px; height: 24px; stroke: #fff; }
+  .login-left h2 { font-size: 34px; font-weight: 700; line-height: 1.4; margin-bottom: 16px; text-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  .login-left p { font-size: 15px; color: rgba(255,255,255,.9); line-height: 1.8; max-width: 400px; text-shadow: 0 1px 4px rgba(0,0,0,.3); }
+
+  .login-right {
+    width: 460px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 40px;
+  }
+  .login-form { width: 100%; max-width: 340px; }
+  .login-form .sys-title { font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 4px; }
+  .login-form .sys-sub { text-align: center; color: var(--text-3); font-size: 13px; margin-bottom: 36px; }
+  .field { margin-bottom: 22px; }
+  .field label { display: block; font-size: 13px; color: var(--text-2); margin-bottom: 8px; }
+  .input-wrap { position: relative; }
+  .input-wrap .icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-3); }
+  .input-wrap input {
+    width: 100%; height: 44px; padding: 0 12px 0 38px;
+    border: 1px solid #dcdfe6; border-radius: 6px; font-size: 14px; outline: none;
+    transition: border .2s, box-shadow .2s;
+  }
+  .input-wrap input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(64,158,255,.12); }
+  .login-extra { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--text-2); margin-bottom: 24px; }
+  .login-extra label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .login-extra a { color: var(--primary); text-decoration: none; }
+  .btn-login {
+    width: 100%; height: 44px; border: none; border-radius: 6px;
+    background: linear-gradient(90deg, #409eff, #66b1ff); color: #fff; font-size: 15px;
+    font-weight: 500; letter-spacing: 4px; transition: opacity .2s;
+  }
+  .btn-login:hover { opacity: .92; }
+  .login-foot { text-align: center; color: var(--text-3); font-size: 12px; margin-top: 32px; }
+
+  /* ================= 主布局 ================= */
+  #app { display: none; height: 100vh; }
+  .layout { display: flex; height: 100%; }
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--menu-bg);
+    transition: width .25s;
+    display: flex; flex-direction: column;
+    flex-shrink: 0;
+  }
+  .sidebar.collapsed { width: var(--sidebar-w-collapsed); }
+  .logo {
+    height: var(--topbar-h);
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 18px; color: #fff; font-size: 15px; font-weight: 600;
+    white-space: nowrap; overflow: hidden;
+    background: #2b3a4a;
+  }
+  .logo .icon { width: 22px; height: 22px; stroke: var(--primary); flex-shrink: 0; }
+  .sidebar.collapsed .logo span { display: none; }
+
+  .menu { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 8px 0; }
+  .menu::-webkit-scrollbar { width: 4px; }
+  .menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 2px; }
+
+  .menu-item {
+    display: flex; align-items: center; gap: 10px;
+    height: 46px; padding: 0 18px;
+    color: var(--menu-text); cursor: pointer; font-size: 14px;
+    white-space: nowrap; position: relative;
+    transition: background .2s, color .2s;
+  }
+  .menu-item:hover { background: var(--menu-hover); color: #fff; }
+  .menu-item.active { background: var(--primary); color: #fff; }
+  .menu-item .icon { flex-shrink: 0; }
+  .menu-item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+  .menu-item .arrow { transition: transform .25s; flex-shrink: 0; }
+  .menu-item .arrow.open { transform: rotate(180deg); }
+
+  .submenu { max-height: 0; overflow: hidden; transition: max-height .3s ease; background: #263445; }
+  .submenu.open { max-height: 500px; }
+  .submenu .menu-item { padding-left: 46px; height: 40px; font-size: 13px; }
+  .submenu .menu-item.active { background: var(--primary); color: #fff; }
+  .submenu .menu-item:hover { color: #fff; }
+
+  .sidebar.collapsed .menu-item .label,
+  .sidebar.collapsed .menu-item .arrow { display: none; }
+  .sidebar.collapsed .menu-item { justify-content: center; padding: 0; }
+  .sidebar.collapsed .menu-group { position: relative; }
+  .sidebar.collapsed .submenu {
+    position: absolute; left: 100%; top: 0; z-index: 100;
+    min-width: 150px; max-height: none; background: var(--menu-bg);
+    border-radius: 0 6px 6px 0; box-shadow: 3px 3px 12px rgba(0,0,0,.25);
+    display: none;
+  }
+  .sidebar.collapsed .menu-group:hover .submenu { display: block; }
+  .sidebar.collapsed .submenu .menu-item { justify-content: flex-start; padding: 0 16px; height: 40px; }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+  .topbar {
+    height: var(--topbar-h); background: #fff;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px; box-shadow: 0 1px 4px rgba(0,21,41,.08); flex-shrink: 0;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 14px; }
+  .collapse-btn {
+    width: 34px; height: 34px; border: none; background: none; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center; color: var(--text-2); cursor: pointer;
+  }
+  .collapse-btn:hover { background: var(--bg); }
+  .breadcrumb { font-size: 14px; color: var(--text); }
+  .breadcrumb .sep { color: var(--text-3); margin: 0 6px; }
+  .breadcrumb .current { color: var(--text-2); }
+  .topbar-right { display: flex; align-items: center; gap: 18px; }
+  .icon-btn { color: var(--text-2); cursor: pointer; position: relative; }
+  .icon-btn:hover { color: var(--primary); }
+  .badge-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; }
+  .user-drop { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-2); }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #409eff, #66b1ff); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 13px;
+  }
+
+  /* tabs 标签页导航 */
+  .tags-view {
+    height: 40px; background: #fff; flex-shrink: 0;
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 16px; border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 2px rgba(0,21,41,.04); overflow-x: auto;
+  }
+  .tags-view::-webkit-scrollbar { height: 0; }
+  .tag-item {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 26px; padding: 0 10px; flex-shrink: 0;
+    border: 1px solid #dcdfe6; border-radius: 4px;
+    font-size: 12px; color: var(--text-2); cursor: pointer; background: #fff;
+    transition: all .2s;
+  }
+  .tag-item.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .tag-item .close {
+    width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%; font-size: 15px; line-height: 1; font-style: normal; transition: all .2s;
+  }
+  .tag-item .close:hover { background: rgba(0,0,0,.15); }
+  .tag-item.active .close:hover { background: rgba(255,255,255,.3); }
+  .tag-item .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; opacity: .5; }
+  .tag-item.active .dot { opacity: 1; }
+
+  .content { flex: 1; overflow: auto; padding: 16px; }
+
+  .card { background: #fff; border-radius: 8px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.03); }
+  .card-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+  .stat-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,.03); display: flex; align-items: center; gap: 16px; }
+  .stat-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .stat-icon .icon { width: 24px; height: 24px; }
+  .stat-icon.blue { background: #ecf5ff; color: var(--primary); }
+  .stat-icon.green { background: #f0f9eb; color: var(--success); }
+  .stat-icon.orange { background: #fdf6ec; color: var(--warning); }
+  .stat-icon.red { background: #fef0f0; color: var(--danger); }
+  .stat-card .num { font-size: 24px; font-weight: 700; }
+  .stat-card .label { color: var(--text-3); font-size: 13px; margin-top: 2px; }
+
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .toolbar .search { position: relative; }
+  .toolbar .search .icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-3); }
+  .toolbar input, .toolbar select {
+    height: 34px; border: 1px solid #dcdfe6; border-radius: 4px; padding: 0 12px; font-size: 13px; outline: none; color: var(--text);
+  }
+  .toolbar .search input { width: 220px; padding-left: 32px; }
+  .toolbar input:focus, .toolbar select:focus { border-color: var(--primary); }
+  .toolbar .spacer { flex: 1; }
+  .btn { height: 34px; padding: 0 16px; border: none; border-radius: 4px; font-size: 13px; cursor: pointer; transition: opacity .2s; }
+  .btn:hover { opacity: .88; }
+  .btn.primary { background: var(--primary); color: #fff; }
+  .btn.plain { background: #fff; color: var(--text-2); border: 1px solid #dcdfe6; }
+  .btn.plain:hover { color: var(--primary); border-color: var(--primary); opacity: 1; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: #fafafa; color: var(--text-2); font-weight: 600; }
+  tr:hover td { background: #f5f7fa; }
+  td .op-link { color: var(--primary); cursor: pointer; margin-right: 10px; font-size: 13px; }
+  td .op-link.danger { color: var(--danger); }
+
+  .tag { display: inline-block; padding: 1px 9px; border-radius: 3px; font-size: 12px; line-height: 20px; }
+  .tag.success { background: #f0f9eb; color: var(--success); border: 1px solid #e1f3d8; }
+  .tag.warning { background: #fdf6ec; color: var(--warning); border: 1px solid #faecd8; }
+  .tag.danger  { background: #fef0f0; color: var(--danger); border: 1px solid #fde2e2; }
+  .tag.info    { background: #f4f4f5; color: var(--text-3); border: 1px solid #e9e9eb; }
+  .tag.primary { background: #ecf5ff; color: var(--primary); border: 1px solid #d9ecff; }
+
+  .pagination { display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 16px; font-size: 13px; color: var(--text-2); }
+  .pagination .total { margin-right: auto; color: var(--text-3); }
+  .page-btn { min-width: 30px; height: 30px; padding: 0 6px; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; color: var(--text-2); font-size: 13px; cursor: pointer; }
+  .page-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  .el-form { max-width: 620px; }
+  .el-form-row { display: flex; align-items: flex-start; margin-bottom: 22px; }
+  .el-form-row > label { width: 100px; text-align: right; padding-right: 14px; color: var(--text-2); line-height: 38px; flex-shrink: 0; }
+  .el-form-row > label::before { content: '* '; color: var(--danger); }
+  .el-form-row .control { flex: 1; }
+  .el-form-row input, .el-form-row select, .el-form-row textarea {
+    width: 100%; min-height: 38px; border: 1px solid #dcdfe6; border-radius: 4px; padding: 8px 12px; font-size: 14px; outline: none; font-family: inherit; color: var(--text);
+  }
+  .el-form-row textarea { resize: vertical; }
+  .el-form-row input:focus, .el-form-row select:focus, .el-form-row textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(64,158,255,.1); }
+  .el-form-row .hint { color: var(--text-3); font-size: 12px; margin-top: 4px; }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: 30px; height: 240px; padding: 10px 10px 0; }
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; }
+  .bar { width: 46px; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, #66b1ff, #409eff); transition: height .5s; }
+  .bar.green { background: linear-gradient(180deg, #85ce61, #67c23a); }
+  .bar.orange { background: linear-gradient(180deg, #ebb563, #e6a23c); }
+  .bar-label { font-size: 12px; color: var(--text-2); }
+  .pie-row { display: flex; align-items: center; gap: 40px; }
+  .pie { width: 190px; height: 190px; border-radius: 50%; background: conic-gradient(var(--primary) 0 55%, var(--success) 55% 80%, var(--warning) 80% 100%); position: relative; flex-shrink: 0; }
+  .pie::after { content: ''; position: absolute; inset: 42px; background: #fff; border-radius: 50%; }
+  .legend { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .legend-item { display: flex; align-items: center; gap: 10px; color: var(--text-2); font-size: 13px; }
+  .legend-item .val { margin-left: auto; color: var(--text); font-weight: 600; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  .upload-zone {
+    border: 2px dashed #dcdfe6; border-radius: 8px; padding: 40px;
+    text-align: center; color: var(--text-3); cursor: pointer; transition: all .2s;
+  }
+  .upload-zone:hover { border-color: var(--primary); color: var(--primary); }
+  .upload-zone .icon { width: 40px; height: 40px; margin-bottom: 10px; }
+
+  .view { display: none; }
+  .view.active { display: block; }
+  .empty { text-align: center; color: var(--text-3); padding: 40px 0; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-school" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></symbol>
+  <symbol id="i-trending" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+</svg>
+
+<!-- 登录页 -->
+<div id="login-page">
+  <div class="login-left">
+    <div class="login-brand">
+      <div class="brand-logo"><svg class="icon"><use href="#i-book"/></svg></div>
+      教师工作量管理系统
+    </div>
+    <h2>让每一份付出<br>都被准确记录</h2>
+    <p>教学、科研、其他工作量一站式申报与审核，告别手工统计的繁琐与差错，让教师把精力花在真正重要的事情上。</p>
+  </div>
+  <div class="login-right">
+    <div class="login-form">
+      <div class="sys-title">欢迎登录</div>
+      <div class="sys-sub">Teacher Workload Management System</div>
+      <div class="field">
+        <label>账号</label>
+        <div class="input-wrap"><svg class="icon"><use href="#i-user"/></svg><input id="username" type="text" placeholder="工号 / 手机号" value="T2026001"></div>
+      </div>
+      <div class="field">
+        <label>密码</label>
+        <div class="input-wrap"><svg class="icon"><use href="#i-lock"/></svg><input id="password" type="password" placeholder="请输入密码" value="123456"></div>
+      </div>
+      <div class="login-extra">
+        <label><input type="checkbox" checked> 记住我</label>
+        <a href="#">忘记密码？</a>
+      </div>
+      <button class="btn-login" onclick="login()">登 录</button>
+      <div class="login-foot">© 2026 教师工作量管理系统 · 信息中心</div>
+    </div>
+  </div>
+</div>
+
+<!-- 主界面 -->
+<div id="app">
+  <div class="layout">
+    <div class="sidebar" id="sidebar">
+      <div class="logo"><svg class="icon"><use href="#i-book"/></svg><span>工作量管理系统</span></div>
+      <div class="menu">
+        <div class="menu-item active" data-view="dashboard" onclick="openTab('dashboard', this)"><svg class="icon"><use href="#i-dashboard"/></svg><span class="label">工作台</span></div>
+
+        <div class="menu-group">
+          <div class="menu-item" onclick="toggleSub(this)"><svg class="icon"><use href="#i-folder"/></svg><span class="label">工作量管理</span><svg class="icon arrow" style="width:12px;height:12px"><use href="#i-chevron"/></svg></div>
+          <div class="submenu">
+            <div class="menu-item" data-view="declare" onclick="openTab('declare', this)"><svg class="icon"><use href="#i-edit"/></svg><span class="label">工作量申报</span></div>
+            <div class="menu-item" data-view="mylist" onclick="openTab('mylist', this)"><svg class="icon"><use href="#i-list"/></svg><span class="label">我的工作量</span></div>
+            <div class="menu-item" data-view="audit" onclick="openTab('audit', this)"><svg class="icon"><use href="#i-check"/></svg><span class="label">审核管理</span></div>
+            <div class="menu-item" data-view="import" onclick="openTab('import', this)"><svg class="icon"><use href="#i-upload"/></svg><span class="label">工作量导入</span></div>
+            <div class="menu-item" data-view="template" onclick="openTab('template', this)"><svg class="icon"><use href="#i-file"/></svg><span class="label">工作量模板</span></div>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-item" onclick="toggleSub(this)"><svg class="icon"><use href="#i-chart"/></svg><span class="label">统计报表</span><svg class="icon arrow" style="width:12px;height:12px"><use href="#i-chevron"/></svg></div>
+          <div class="submenu">
+            <div class="menu-item" data-view="report-summary" onclick="openTab('report-summary', this)"><svg class="icon"><use href="#i-chart"/></svg><span class="label">工作量汇总</span></div>
+            <div class="menu-item" data-view="report-rank" onclick="openTab('report-rank', this)"><svg class="icon"><use href="#i-award"/></svg><span class="label">教师排名</span></div>
+            <div class="menu-item" data-view="report-semester" onclick="openTab('report-semester', this)"><svg class="icon"><use href="#i-trending"/></svg><span class="label">学期对比</span></div>
+            <div class="menu-item" data-view="report-export" onclick="openTab('report-export', this)"><svg class="icon"><use href="#i-download"/></svg><span class="label">明细导出</span></div>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-item" onclick="toggleSub(this)"><svg class="icon"><use href="#i-settings"/></svg><span class="label">系统管理</span><svg class="icon arrow" style="width:12px;height:12px"><use href="#i-chevron"/></svg></div>
+          <div class="submenu">
+            <div class="menu-item" data-view="sys-teacher" onclick="openTab('sys-teacher', this)"><svg class="icon"><use href="#i-users"/></svg><span class="label">教师管理</span></div>
+            <div class="menu-item" data-view="sys-college" onclick="openTab('sys-college', this)"><svg class="icon"><use href="#i-school"/></svg><span class="label">学院管理</span></div>
+            <div class="menu-item" data-view="sys-role" onclick="openTab('sys-role', this)"><svg class="icon"><use href="#i-shield"/></svg><span class="label">角色权限</span></div>
+            <div class="menu-item" data-view="sys-user" onclick="openTab('sys-user', this)"><svg class="icon"><use href="#i-user"/></svg><span class="label">用户管理</span></div>
+            <div class="menu-item" data-view="sys-log" onclick="openTab('sys-log', this)"><svg class="icon"><use href="#i-log"/></svg><span class="label">操作日志</span></div>
+            <div class="menu-item" data-view="sys-setting" onclick="openTab('sys-setting', this)"><svg class="icon"><use href="#i-settings"/></svg><span class="label">系统设置</span></div>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-item" onclick="toggleSub(this)"><svg class="icon"><use href="#i-user"/></svg><span class="label">个人中心</span><svg class="icon arrow" style="width:12px;height:12px"><use href="#i-chevron"/></svg></div>
+          <div class="submenu">
+            <div class="menu-item" data-view="profile" onclick="openTab('profile', this)"><svg class="icon"><use href="#i-user"/></svg><span class="label">我的资料</span></div>
+            <div class="menu-item" data-view="password" onclick="openTab('password', this)"><svg class="icon"><use href="#i-lock"/></svg><span class="label">修改密码</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="collapse-btn" onclick="toggleSidebar()"><svg class="icon" style="width:18px;height:18px"><use href="#i-menu"/></svg></button>
+          <div class="breadcrumb" id="breadcrumb">工作台</div>
+        </div>
+        <div class="topbar-right">
+          <div class="icon-btn"><svg class="icon" style="width:18px;height:18px"><use href="#i-search"/></svg></div>
+          <div class="icon-btn"><svg class="icon" style="width:18px;height:18px"><use href="#i-bell"/></svg><span class="badge-dot"></span></div>
+          <div class="user-drop"><div class="avatar">黄</div><span>黄老师</span><svg class="icon" style="width:12px;height:12px"><use href="#i-chevron"/></svg></div>
+        </div>
+      </div>
+
+      <div class="tags-view" id="tags-view"></div>
+
+      <div class="content">
+
+        <!-- 工作台 -->
+        <div class="view active" id="view-dashboard">
+          <div class="stat-row">
+            <div class="stat-card"><div class="stat-icon blue"><svg class="icon"><use href="#i-book"/></svg></div><div><div class="num">128</div><div class="label">本学期总课时</div></div></div>
+            <div class="stat-card"><div class="stat-icon green"><svg class="icon"><use href="#i-check"/></svg></div><div><div class="num">24</div><div class="label">已通过条目</div></div></div>
+            <div class="stat-card"><div class="stat-icon orange"><svg class="icon"><use href="#i-list"/></svg></div><div><div class="num">3</div><div class="label">待审核</div></div></div>
+            <div class="stat-card"><div class="stat-icon red"><svg class="icon"><use href="#i-bell"/></svg></div><div><div class="num">1</div><div class="label">已驳回</div></div></div>
+          </div>
+          <div class="card">
+            <div class="card-title">最近申报</div>
+            <table>
+              <thead><tr><th>类型</th><th>内容</th><th>数量</th><th>学期</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr><td><span class="tag primary">教学</span></td><td>《数据结构》理论课</td><td>64 课时</td><td>2025-2026-2</td><td><span class="tag success">已通过</span></td></tr>
+                <tr><td><span class="tag info">科研</span></td><td>核心期刊论文</td><td>1 篇</td><td>2025-2026-2</td><td><span class="tag warning">待审核</span></td></tr>
+                <tr><td><span class="tag info">其他</span></td><td>指导毕业设计</td><td>6 人</td><td>2025-2026-2</td><td><span class="tag warning">待审核</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 工作量申报 -->
+        <div class="view" id="view-declare">
+          <div class="card">
+            <div class="card-title">工作量申报</div>
+            <div class="el-form">
+              <div class="el-form-row"><label>工作量类型</label><div class="control"><select><option>教学工作量</option><option>科研工作量</option><option>其他工作量</option></select></div></div>
+              <div class="el-form-row"><label>内容描述</label><div class="control"><input type="text" placeholder="如：2026 春季《数据结构》理论课"></div></div>
+              <div class="el-form-row"><label>数量</label><div class="control"><input type="text" placeholder="如：64"><div class="hint">单位为课时 / 篇 / 人 / 项等</div></div></div>
+              <div class="el-form-row"><label>学期</label><div class="control"><select><option>2025-2026 第二学期</option><option>2025-2026 第一学期</option><option>2024-2025 第二学期</option></select></div></div>
+              <div class="el-form-row"><label>备注</label><div class="control"><textarea rows="3" placeholder="选填"></textarea></div></div>
+              <div class="el-form-row"><label></label><div class="control"><button class="btn primary">提交申报</button> <button class="btn plain">重置</button></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 我的工作量 -->
+        <div class="view" id="view-mylist">
+          <div class="card">
+            <div class="card-title">我的工作量</div>
+            <div class="toolbar">
+              <div class="search"><svg class="icon"><use href="#i-search"/></svg><input type="text" placeholder="搜索内容描述"></div>
+              <select><option>全部类型</option><option>教学</option><option>科研</option><option>其他</option></select>
+              <select><option>全部状态</option><option>已通过</option><option>待审核</option><option>已驳回</option></select>
+              <div class="spacer"></div>
+              <button class="btn primary">+ 新增申报</button>
+            </div>
+            <table>
+              <thead><tr><th style="width:40px"></th><th style="width:50px">#</th><th>类型</th><th>内容</th><th>数量</th><th>学期</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td><input type="checkbox"></td><td>1</td><td><span class="tag primary">教学</span></td><td>《数据结构》理论课</td><td>64 课时</td><td>2025-2026-2</td><td><span class="tag success">已通过</span></td><td><span class="op-link">查看</span><span class="op-link">编辑</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>2</td><td><span class="tag primary">教学</span></td><td>《操作系统》实验课</td><td>32 课时</td><td>2025-2026-2</td><td><span class="tag success">已通过</span></td><td><span class="op-link">查看</span><span class="op-link">编辑</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>3</td><td><span class="tag info">科研</span></td><td>核心期刊论文</td><td>1 篇</td><td>2025-2026-2</td><td><span class="tag warning">待审核</span></td><td><span class="op-link">查看</span><span class="op-link">编辑</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>4</td><td><span class="tag info">其他</span></td><td>指导毕业设计</td><td>6 人</td><td>2025-2026-2</td><td><span class="tag warning">待审核</span></td><td><span class="op-link">查看</span><span class="op-link">编辑</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>5</td><td><span class="tag info">其他</span></td><td>担任班主任</td><td>1 学期</td><td>2025-2026-1</td><td><span class="tag danger">已驳回</span></td><td><span class="op-link">查看</span><span class="op-link">编辑</span></td></tr>
+              </tbody>
+            </table>
+            <div class="pagination"><span class="total">共 48 条</span><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">4</button><button class="page-btn">›</button></div>
+          </div>
+        </div>
+
+        <!-- 审核管理 -->
+        <div class="view" id="view-audit">
+          <div class="card">
+            <div class="card-title">审核管理</div>
+            <div class="toolbar">
+              <div class="search"><svg class="icon"><use href="#i-search"/></svg><input type="text" placeholder="搜索申请人"></div>
+              <select><option>全部类型</option><option>教学</option><option>科研</option><option>其他</option></select>
+              <div class="spacer"></div>
+              <button class="btn plain">批量通过</button>
+              <button class="btn plain">批量驳回</button>
+            </div>
+            <table>
+              <thead><tr><th style="width:40px"></th><th>申请人</th><th>学院</th><th>类型</th><th>内容</th><th>数量</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td><input type="checkbox"></td><td>黄老师</td><td>计算机学院</td><td><span class="tag info">科研</span></td><td>核心期刊论文</td><td>1 篇</td><td><span class="op-link">通过</span><span class="op-link danger">驳回</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>李老师</td><td>计算机学院</td><td><span class="tag info">其他</span></td><td>指导毕业设计</td><td>8 人</td><td><span class="op-link">通过</span><span class="op-link danger">驳回</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>王老师</td><td>软件学院</td><td><span class="tag primary">教学</span></td><td>《计算机网络》理论课</td><td>48 课时</td><td><span class="op-link">通过</span><span class="op-link danger">驳回</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>赵老师</td><td>软件学院</td><td><span class="tag info">科研</span></td><td>省级教改项目</td><td>1 项</td><td><span class="op-link">通过</span><span class="op-link danger">驳回</span></td></tr>
+              </tbody>
+            </table>
+            <div class="pagination"><span class="total">共 12 条待审核</span><button class="page-btn active">1</button></div>
+          </div>
+        </div>
+
+        <!-- 工作量导入 -->
+        <div class="view" id="view-import">
+          <div class="card">
+            <div class="card-title">工作量导入</div>
+            <div class="upload-zone"><svg class="icon"><use href="#i-upload"/></svg><div>点击或将 Excel 文件拖拽到此区域上传</div><div style="font-size:12px;margin-top:4px">支持 .xlsx / .xls，最大 10MB</div></div>
+            <div style="margin-top:14px;color:var(--text-3);font-size:13px">请先 <span style="color:var(--primary)">下载导入模板</span>，按模板格式填写后再上传。</div>
+          </div>
+        </div>
+
+        <!-- 工作量模板 -->
+        <div class="view" id="view-template">
+          <div class="card">
+            <div class="card-title">工作量模板</div>
+            <div class="toolbar"><div class="spacer"></div><button class="btn primary">+ 新建模板</button></div>
+            <table>
+              <thead><tr><th>模板名称</th><th>类型</th><th>默认数量</th><th>使用次数</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td>理论课模板</td><td><span class="tag primary">教学</span></td><td>64 课时</td><td>18</td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td>实验课模板</td><td><span class="tag primary">教学</span></td><td>32 课时</td><td>12</td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td>论文模板</td><td><span class="tag info">科研</span></td><td>1 篇</td><td>9</td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 工作量汇总 -->
+        <div class="view" id="view-report-summary">
+          <div class="card"><div class="card-title">各教师工作量对比（课时）</div>
+            <div class="bar-chart">
+              <div class="bar-group"><div class="bar" style="height:180px"></div><div class="bar-label">黄老师</div></div>
+              <div class="bar-group"><div class="bar green" style="height:130px"></div><div class="bar-label">李老师</div></div>
+              <div class="bar-group"><div class="bar orange" style="height:150px"></div><div class="bar-label">王老师</div></div>
+              <div class="bar-group"><div class="bar" style="height:100px"></div><div class="bar-label">赵老师</div></div>
+              <div class="bar-group"><div class="bar green" style="height:160px"></div><div class="bar-label">陈老师</div></div>
+              <div class="bar-group"><div class="bar orange" style="height:120px"></div><div class="bar-label">刘老师</div></div>
+            </div>
+          </div>
+          <div class="card"><div class="card-title">三类工作量占比</div>
+            <div class="pie-row">
+              <div class="pie"></div>
+              <div class="legend">
+                <div class="legend-item"><span class="dot" style="background:#409eff"></span>教学工作量<span class="val">55%</span></div>
+                <div class="legend-item"><span class="dot" style="background:#67c23a"></span>科研工作量<span class="val">25%</span></div>
+                <div class="legend-item"><span class="dot" style="background:#e6a23c"></span>其他工作量<span class="val">20%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 教师排名 -->
+        <div class="view" id="view-report-rank">
+          <div class="card">
+            <div class="card-title">工作量排名</div>
+            <table>
+              <thead><tr><th style="width:60px">排名</th><th>教师</th><th>学院</th><th>教学</th><th>科研</th><th>其他</th><th>合计</th></tr></thead>
+              <tbody>
+                <tr><td><b style="color:#e6a23c">1</b></td><td>黄老师</td><td>计算机学院</td><td>96</td><td>20</td><td>12</td><td><b>128</b></td></tr>
+                <tr><td><b style="color:#909399">2</b></td><td>陈老师</td><td>计算机学院</td><td>88</td><td>18</td><td>10</td><td>116</td></tr>
+                <tr><td><b style="color:#c98a5b">3</b></td><td>王老师</td><td>软件学院</td><td>80</td><td>15</td><td>9</td><td>104</td></tr>
+                <tr><td>4</td><td>李老师</td><td>计算机学院</td><td>72</td><td>12</td><td>8</td><td>92</td></tr>
+                <tr><td>5</td><td>刘老师</td><td>软件学院</td><td>68</td><td>10</td><td>6</td><td>84</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 学期对比 -->
+        <div class="view" id="view-report-semester">
+          <div class="card"><div class="card-title">近三学期工作量对比</div>
+            <div class="bar-chart">
+              <div class="bar-group"><div class="bar" style="height:140px"></div><div class="bar-label">2024-2025-1</div></div>
+              <div class="bar-group"><div class="bar green" style="height:160px"></div><div class="bar-label">2024-2025-2</div></div>
+              <div class="bar-group"><div class="bar orange" style="height:180px"></div><div class="bar-label">2025-2026-1</div></div>
+              <div class="bar-group"><div class="bar" style="height:128px"></div><div class="bar-label">2025-2026-2</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 明细导出 -->
+        <div class="view" id="view-report-export">
+          <div class="card">
+            <div class="card-title">明细导出</div>
+            <div class="el-form">
+              <div class="el-form-row"><label>导出范围</label><div class="control"><select><option>全部学院</option><option>计算机学院</option><option>软件学院</option></select></div></div>
+              <div class="el-form-row"><label>学期</label><div class="control"><select><option>2025-2026 第二学期</option><option>2025-2026 第一学期</option></select></div></div>
+              <div class="el-form-row"><label>导出格式</label><div class="control"><select><option>Excel (.xlsx)</option><option>CSV (.csv)</option></select></div></div>
+              <div class="el-form-row"><label></label><div class="control"><button class="btn primary">导出报表</button></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 教师管理 -->
+        <div class="view" id="view-sys-teacher">
+          <div class="card">
+            <div class="card-title">教师管理</div>
+            <div class="toolbar">
+              <div class="search"><svg class="icon"><use href="#i-search"/></svg><input type="text" placeholder="搜索工号 / 姓名"></div>
+              <select><option>全部学院</option><option>计算机学院</option><option>软件学院</option></select>
+              <div class="spacer"></div>
+              <button class="btn primary">+ 新增教师</button>
+            </div>
+            <table>
+              <thead><tr><th style="width:40px"></th><th>工号</th><th>姓名</th><th>学院</th><th>职称</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td><input type="checkbox"></td><td>T2026001</td><td>黄老师</td><td>计算机学院</td><td>讲师</td><td><span class="tag success">在职</span></td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>T2026002</td><td>李老师</td><td>计算机学院</td><td>副教授</td><td><span class="tag success">在职</span></td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>T2026003</td><td>王老师</td><td>软件学院</td><td>教授</td><td><span class="tag success">在职</span></td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>T2026004</td><td>赵老师</td><td>软件学院</td><td>讲师</td><td><span class="tag info">休假</span></td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 学院管理 -->
+        <div class="view" id="view-sys-college">
+          <div class="card">
+            <div class="card-title">学院管理</div>
+            <div class="toolbar">
+              <div class="search"><svg class="icon"><use href="#i-search"/></svg><input type="text" placeholder="搜索学院名称"></div>
+              <div class="spacer"></div>
+              <button class="btn primary">+ 新增学院</button>
+            </div>
+            <table>
+              <thead><tr><th style="width:40px"></th><th>学院名称</th><th>教师数</th><th>负责人</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td><input type="checkbox"></td><td>计算机学院</td><td>48</td><td>张院长</td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>软件学院</td><td>36</td><td>李院长</td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td><input type="checkbox"></td><td>信息工程学院</td><td>52</td><td>王院长</td><td><span class="op-link">编辑</span><span class="op-link danger">删除</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 角色权限 -->
+        <div class="view" id="view-sys-role">
+          <div class="card">
+            <div class="card-title">角色权限</div>
+            <div class="toolbar"><div class="spacer"></div><button class="btn primary">+ 新增角色</button></div>
+            <table>
+              <thead><tr><th style="width:40px"></th><th>角色</th><th>描述</th><th>权限范围</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td><input type="checkbox"></td><td><span class="tag danger">管理员</span></td><td>系统管理员</td><td>全部权限</td><td><span class="op-link">配置</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td><input type="checkbox"></td><td><span class="tag warning">审核员</span></td><td>教务处审核人员</td><td>审核、查看报表</td><td><span class="op-link">配置</span><span class="op-link danger">删除</span></td></tr>
+                <tr><td><input type="checkbox"></td><td><span class="tag primary">教师</span></td><td>普通教师</td><td>申报、查看自己的记录</td><td><span class="op-link">配置</span><span class="op-link danger">删除</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 用户管理 -->
+        <div class="view" id="view-sys-user">
+          <div class="card">
+            <div class="card-title">用户管理</div>
+            <div class="toolbar">
+              <div class="search"><svg class="icon"><use href="#i-search"/></svg><input type="text" placeholder="搜索用户名"></div>
+              <div class="spacer"></div>
+              <button class="btn primary">+ 新增用户</button>
+            </div>
+            <table>
+              <thead><tr><th>用户名</th><th>姓名</th><th>角色</th><th>最近登录</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td>admin</td><td>系统管理员</td><td><span class="tag danger">管理员</span></td><td>2026-10-15 09:30</td><td><span class="tag success">正常</span></td><td><span class="op-link">编辑</span><span class="op-link danger">禁用</span></td></tr>
+                <tr><td>huang</td><td>黄老师</td><td><span class="tag primary">教师</span></td><td>2026-10-15 08:12</td><td><span class="tag success">正常</span></td><td><span class="op-link">编辑</span><span class="op-link danger">禁用</span></td></tr>
+                <tr><td>auditor</td><td>审核员</td><td><span class="tag warning">审核员</span></td><td>2026-10-14 17:45</td><td><span class="tag success">正常</span></td><td><span class="op-link">编辑</span><span class="op-link danger">禁用</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 操作日志 -->
+        <div class="view" id="view-sys-log">
+          <div class="card">
+            <div class="card-title">操作日志</div>
+            <div class="toolbar">
+              <div class="search"><svg class="icon"><use href="#i-search"/></svg><input type="text" placeholder="搜索操作内容"></div>
+              <select><option>全部类型</option><option>登录</option><option>申报</option><option>审核</option></select>
+            </div>
+            <table>
+              <thead><tr><th>时间</th><th>用户</th><th>操作类型</th><th>操作内容</th><th>IP 地址</th></tr></thead>
+              <tbody>
+                <tr><td>2026-10-15 09:30:12</td><td>admin</td><td><span class="tag primary">登录</span></td><td>登录系统</td><td>192.168.1.10</td></tr>
+                <tr><td>2026-10-15 09:31:05</td><td>huang</td><td><span class="tag info">申报</span></td><td>提交工作量申报</td><td>192.168.1.22</td></tr>
+                <tr><td>2026-10-15 10:02:44</td><td>auditor</td><td><span class="tag success">审核</span></td><td>审核通过 1 条申报</td><td>192.168.1.15</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 系统设置 -->
+        <div class="view" id="view-sys-setting">
+          <div class="card">
+            <div class="card-title">系统设置</div>
+            <div class="el-form">
+              <div class="el-form-row"><label>系统名称</label><div class="control"><input type="text" value="教师工作量管理系统"></div></div>
+              <div class="el-form-row"><label>当前学期</label><div class="control"><select><option>2025-2026 第二学期</option><option>2025-2026 第一学期</option></select></div></div>
+              <div class="el-form-row"><label>申报截止</label><div class="control"><input type="text" placeholder="如：2026-07-15"></div></div>
+              <div class="el-form-row"><label></label><div class="control"><button class="btn primary">保存设置</button></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 我的资料 -->
+        <div class="view" id="view-profile">
+          <div class="card">
+            <div class="card-title">我的资料</div>
+            <div class="el-form">
+              <div class="el-form-row"><label>工号</label><div class="control"><input type="text" value="T2026001" disabled></div></div>
+              <div class="el-form-row"><label>姓名</label><div class="control"><input type="text" value="黄老师"></div></div>
+              <div class="el-form-row"><label>学院</label><div class="control"><select><option>计算机学院</option><option>软件学院</option></select></div></div>
+              <div class="el-form-row"><label>职称</label><div class="control"><select><option>讲师</option><option>副教授</option><option>教授</option></select></div></div>
+              <div class="el-form-row"><label></label><div class="control"><button class="btn primary">保存</button></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 修改密码 -->
+        <div class="view" id="view-password">
+          <div class="card">
+            <div class="card-title">修改密码</div>
+            <div class="el-form">
+              <div class="el-form-row"><label>原密码</label><div class="control"><input type="password" placeholder="请输入原密码"></div></div>
+              <div class="el-form-row"><label>新密码</label><div class="control"><input type="password" placeholder="至少 8 位，含字母和数字"></div></div>
+              <div class="el-form-row"><label>确认密码</label><div class="control"><input type="password" placeholder="再次输入新密码"></div></div>
+              <div class="el-form-row"><label></label><div class="control"><button class="btn primary">确认修改</button></div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BREADCRUMB = {
+    'dashboard': '工作台',
+    'declare': '工作量管理 / 工作量申报',
+    'mylist': '工作量管理 / 我的工作量',
+    'audit': '工作量管理 / 审核管理',
+    'import': '工作量管理 / 工作量导入',
+    'template': '工作量管理 / 工作量模板',
+    'report-summary': '统计报表 / 工作量汇总',
+    'report-rank': '统计报表 / 教师排名',
+    'report-semester': '统计报表 / 学期对比',
+    'report-export': '统计报表 / 明细导出',
+    'sys-teacher': '系统管理 / 教师管理',
+    'sys-college': '系统管理 / 学院管理',
+    'sys-role': '系统管理 / 角色权限',
+    'sys-user': '系统管理 / 用户管理',
+    'sys-log': '系统管理 / 操作日志',
+    'sys-setting': '系统管理 / 系统设置',
+    'profile': '个人中心 / 我的资料',
+    'password': '个人中心 / 修改密码'
+  };
+  const TITLES = {
+    'dashboard': '工作台', 'declare': '工作量申报', 'mylist': '我的工作量', 'audit': '审核管理',
+    'import': '工作量导入', 'template': '工作量模板', 'report-summary': '工作量汇总',
+    'report-rank': '教师排名', 'report-semester': '学期对比', 'report-export': '明细导出',
+    'sys-teacher': '教师管理', 'sys-college': '学院管理', 'sys-role': '角色权限',
+    'sys-user': '用户管理', 'sys-log': '操作日志', 'sys-setting': '系统设置',
+    'profile': '我的资料', 'password': '修改密码'
+  };
+
+  let currentView = 'dashboard';
+  let tabs = [{ view: 'dashboard', fixed: true }];
+
+  function login() {
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    renderTabs();
+  }
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+  function toggleSub(menuItem) {
+    const arrow = menuItem.querySelector('.arrow');
+    const sub = menuItem.parentElement.querySelector('.submenu');
+    if (arrow) arrow.classList.toggle('open');
+    if (sub) sub.classList.toggle('open');
+  }
+
+  function openTab(view, el) {
+    if (el) {
+      document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+      el.classList.add('active');
+    }
+    if (!tabs.find(t => t.view === view)) tabs.push({ view });
+    currentView = view;
+    renderTabs();
+    showView(view);
+  }
+
+  function closeTab(view, e) {
+    e.stopPropagation();
+    const idx = tabs.findIndex(t => t.view === view);
+    if (idx === -1 || tabs[idx].fixed) return;
+    tabs.splice(idx, 1);
+    if (view === currentView) {
+      // 切换到相邻的标签
+      const next = tabs[idx] || tabs[idx - 1] || tabs[0];
+      currentView = next.view;
+      showView(currentView);
+    }
+    renderTabs();
+    syncMenuActive();
+  }
+
+  function switchTab(view) {
+    currentView = view;
+    renderTabs();
+    showView(view);
+    syncMenuActive();
+  }
+
+  function showView(view) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const t = document.getElementById('view-' + view);
+    if (t) t.classList.add('active');
+    document.getElementById('breadcrumb').textContent = BREADCRUMB[view] || view;
+  }
+
+  function syncMenuActive() {
+    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+    const target = document.querySelector('.menu-item[data-view="' + currentView + '"]');
+    if (target) target.classList.add('active');
+  }
+
+  function renderTabs() {
+    const box = document.getElementById('tags-view');
+    box.innerHTML = '';
+    tabs.forEach(t => {
+      const tag = document.createElement('div');
+      tag.className = 'tag-item' + (t.view === currentView ? ' active' : '');
+      const dot = document.createElement('span');
+      dot.className = 'dot';
+      const label = document.createElement('span');
+      label.textContent = TITLES[t.view] || t.view;
+      tag.appendChild(dot);
+      tag.appendChild(label);
+      if (!t.fixed) {
+        const close = document.createElement('span');
+        close.className = 'close';
+        close.innerHTML = '&times;';
+        close.onclick = function(ev) { closeTab(t.view, ev); };
+        tag.appendChild(close);
+      }
+      tag.onclick = function() { switchTab(t.view); };
+      box.appendChild(tag);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const firstSub = document.querySelector('.submenu');
+    if (firstSub) firstSub.classList.add('open');
+    const firstArrow = document.querySelector('.arrow');
+    if (firstArrow) firstArrow.classList.add('open');
+  });
+
+  // 截图辅助：根据 URL hash 自动登录并跳转到对应页面（如 demo.html#declare）
+  (function initFromHash() {
+    const h = location.hash.replace('#', '');
+    if (h && h !== 'login' && TITLES[h]) {
+      login();
+      openTab(h);
+    }
+  })();
+</script>
+</body>
+</html>

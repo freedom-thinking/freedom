@@ -3,17 +3,21 @@ pageLayout: home
 externalLinkIcon: false
 config:
   -
+    # type: hero
+    # full: true
+    # forceDark: false
+    # effect: beams
+    # effectConfig:
+    #   lightColor: '#3fbde4'
+    #   beamWidth: 2
+    #   scale: 0.2
+    #   noiseIntensity: 1.7
+    #   speed: 3
+    #   beamNumber: 15
+    # ------------------------------------------
     type: hero
     full: true
-    forceDark: false
-    effect: beams
-    effectConfig:
-      lightColor: '#3fbde4'
-      beamWidth: 3
-      noiseIntensity: 1.7
-      speed: 3
-      beamNumber: 15
-
+    effect: lightning  
     hero:
       name: Trace - 痕迹
       tagline:  From Learning to Building
@@ -22,7 +26,7 @@ config:
         -
           theme: brand
           text: 开始
-          link: /blog/
+          link: /note/
         -
           theme: sponsor
           text: Github →

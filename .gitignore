@@ -6,3 +6,20 @@ docs/.vuepress/dist
 
 .DS_Store
 *.log
+
+# Keil MDK 编译产物（note/单片机 配套工程，不提交）
+docs/note/单片机/CODE/**/Output/
+docs/note/单片机/CODE/**/DebugConfig/
+docs/note/单片机/CODE/**/RTE/
+
+# Keil 用户 GUI 布局文件（含个人真名，不提交）
+**/*.uvguix.*
+
+# mintty 崩溃堆栈
+mintty.exe.stackdump
+
+# vuepress 编译临时文件
+docs/.vuepress/config.js.*.mjs
+
+# WorkBuddy 本地工作记忆（不提交）
+.workbuddy/
