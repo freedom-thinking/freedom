@@ -1,0 +1,3 @@
+Sitemap: https://freedom-thinking.github.io/freedom/sitemap.xml
+User-agent:*
+Disallow:
