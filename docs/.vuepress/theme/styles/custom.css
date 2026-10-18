@@ -136,3 +136,55 @@
     margin-bottom: 10px;
   }
 }
+
+/* ==========================================================================
+   首页：hero（闪电，满屏黑）与 banner（大图）交接处的渐变过渡
+   —— .banner-mask 是纯黑均匀遮罩，做不出渐变，所以在 banner 顶部叠一层
+   —— 颜色取实测值：hero 底部为 #020105~#191035（近黑带一点紫），故用 #06040f
+   —— 实测确认：hero 用的是 effect 背景，深浅两种配色下**都是深色底**，
+      所以这里不需要浅色变体（曾经加过白色变体，在浅色下会糊出一层白雾）
+   ========================================================================== */
+.vp-home-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, #06040f 0%, rgba(6, 4, 15, 0) 100%);
+}
+
+/* ==========================================================================
+   项目文章：手机截图并列展示（缩小 + 一行五张；窄屏一行三张）
+   ========================================================================== */
+.shot-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0 8px;
+}
+.shot-row figure {
+  margin: 0;
+  width: calc(20% - 9.6px);
+  max-width: 168px;
+}
+.shot-row img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+}
+.shot-row figcaption {
+  margin-top: 6px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--vp-c-text-3);
+}
+@media (max-width: 640px) {
+  .shot-row figure {
+    width: calc(33.333% - 8px);
+  }
+}
