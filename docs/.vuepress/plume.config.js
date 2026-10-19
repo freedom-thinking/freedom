@@ -35,13 +35,16 @@ export default defineThemeConfig({
    */
   // copyright: true,
 
+  // 页内信息
+  contributors: false, // 个人博客不需要「贡献者」
+  // lastUpdated: true,
   // prevPage: true,   // 是否启用上一页链接
   // nextPage: true,   // 是否启用下一页链接
   // createTime: true, // 是否显示文章创建时间
 
   /* 站点页脚 */
   footer: {
-    message: 'Power by <a target="_blank" href="https://github.com/freedom-thinking">freedom</a>',
+    message: 'Trace · Powered by <a target="_blank" href="https://github.com/freedom-thinking">freedom</a>',
     copyright: '',
   },
 

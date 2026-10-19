@@ -17,11 +17,14 @@ export default defineUserConfig({
   base: '/freedom/',
   lang: 'zh-CN',
   title: '迷途小狗',
-  description: '我的个人博客',
+  description: '迷途小狗 —— 一个还在路上的开发者，写下的项目、笔记和碎碎念',
 
   head: [
     // 配置站点图标
     ['link', { rel: 'icon', type: 'image/svg+xml', href: 'smallSheep.svg' }],
+    // 手机浏览器地址栏配色，跟随纸感主题
+    ['meta', { name: 'theme-color', content: '#faf7f0', media: '(prefers-color-scheme: light)' }],
+    ['meta', { name: 'theme-color', content: '#17140f', media: '(prefers-color-scheme: dark)' }],
   ],
 
   bundler: webpackBundler(),
