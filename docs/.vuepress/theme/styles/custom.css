@@ -121,6 +121,10 @@ body {
 .vp-home-custom {
   position: relative;
   padding: 0;
+  /* 装饰层会故意探出容器（右上角窗光 right:-6%、页尾水墨马 left:-269px），
+     不裁剪就会把页面撑出横向滚动条。用 clip 而不是 hidden：
+     clip 不会创建滚动容器，也就不会影响内部定位。 */
+  overflow-x: clip;
 }
 
 /* 首屏背后的稿纸横线，通屏宽 */
