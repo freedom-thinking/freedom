@@ -14,6 +14,14 @@ const inked = ref(false)
 // 02 做过的东西
 const projects = [
   {
+    title: '毛孩子家 · 智能宠物项圈',
+    to: '/project/mhzhj2026/',
+    year: '2026',
+    kind: '软硬结合',
+    desc: '项圈采心率、算距离，经自己写的 MQTT 送上云，鸿蒙 App 端画地图看轨迹。',
+    tags: ['HarmonyOS', 'ArkTS', 'MQTT'],
+  },
+  {
     title: '加油鸭考研平台',
     to: '/project/vjhjstw5/',
     year: '2025',
