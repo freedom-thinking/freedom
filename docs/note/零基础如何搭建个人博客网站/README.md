@@ -14,7 +14,7 @@ permalink: /note/零基础如何搭建个人博客网站/
 
 - 安装Git版本控制工具 网址:https://git-scm.cn/
 
-  <img src="../static/build_blog/1.png">
+  <img src="../static/build_blog/1.png" alt="Gitee 新建仓库页面，红框标出「新建仓库」入口" />
 
 - 安装VS Code 代码编辑器
 
@@ -23,21 +23,21 @@ permalink: /note/零基础如何搭建个人博客网站/
   网址:  https://nodejs.org/zh-cn
 
 - 安装Typora Markdown 编辑器 网址: https://typoraio.cn/releases/stable.html
-  <img src="../static/build_blog/2.png">
+  <img src="../static/build_blog/2.png" alt="Node.js 官网下载页，红框标出按操作系统选择安装包" />
 
 ### (二)、VuePress介绍
 
 VuePress 是一个以Markdown为重心的静态网站生成器。你可以使用Markdown来书写内容，然后VuePress会帮助你生成一个静态网站来展示它们。VuePress 提供了一个默认主题，主题代表的就是一个网站的整体风格，样式，设计。有很多社区用户创建了其它主题，并把它发布到网上。最具代表的有三个主题，分别是Hope主题，Plume主题，Reco主题。具体网址: https://ecosystem.vuejs.press/zh/themes/default/ 画面如下：
 
-<img src="../static/build_blog/3.png">
+<img src="../static/build_blog/3.png" alt="VuePress 教程页面：左侧导航与默认主题配置说明" />
 
 Hope主题 如下图所示：
 
-<img src="../static/build_blog/6.png">
+<img src="../static/build_blog/6.png" alt="默认主题首页效果：Vue 绿色标志与山景背景" />
 
 Plume主题 如下图所示
 
-<img src="../static/build_blog/4.png">
+<img src="../static/build_blog/4.png" alt="Theme Plume 官方首页" />
 
 都挺好看的，看个人喜好选择，下面我就以Plume主题为例，开发一个个人网站。
 
@@ -104,20 +104,20 @@ Plume主题 如下图所示
          pnpm run docs:dev
    ```
 
-   <img src="../static/build_blog/7.png">
+   <img src="../static/build_blog/7.png" alt="npm create 交互式创建向导：站点名称、描述、打包工具、部署方式等选项" />
 
 2. #### 启动
 
    (1)、安装好后会提示你如何启动，按照提示在cmd输入命令即可
 
-   <img src="../static/build_blog/8.png">
+   <img src="../static/build_blog/8.png" alt="cmd 中按向导提示输入启动命令" />
 
    (2)、启动后的效果
 
-   <img src="../static/build_blog/9.png">
+   <img src="../static/build_blog/9.png" alt="启动成功的终端输出：webpack dev server 监听 localhost:8080" />
 
    (3)、ctrl＋鼠标左击 打开网址 画面如下
-   <img src="../static/build_blog/10.png">
+   <img src="../static/build_blog/10.png" alt="浏览器打开 localhost:8080 后的主题首页" />
 
 3. ####  项目结构 (了解即可)
 
@@ -223,7 +223,7 @@ Plume主题 如下图所示
 
    用Typora这个软件打开docs/README.md 配置首页站点，你会发现这个文件的最顶部有一坨灰色的东西，如图所示：
 
-   <img src="../static/build_blog/11.png">
+   <img src="../static/build_blog/11.png" alt="VS Code 中把 settings.json 的 language 改为 auto" />
 
    以下是这些参数代表的含义：
 
@@ -265,7 +265,7 @@ Plume主题 如下图所示
    ---
    ```
 
-   <img src="../static/build_blog/12.png">
+   <img src="../static/build_blog/12.png" alt="首页 hero 区域的结构标注" />
 
    ##### (2)配置说明
 
@@ -361,7 +361,7 @@ Plume主题 如下图所示
 
        效果预览
 
-       <img src="../static/build_blog/13.png">
+       <img src="../static/build_blog/13.png" alt="tint-plate 背景效果预览" />
 
        使用方法
 
@@ -389,7 +389,7 @@ Plume主题 如下图所示
 
        预览效果
 
-       <img src="../static/build_blog/14.png">
+       <img src="../static/build_blog/14.png" alt="prism 背景效果预览" />
 
        安装依赖
 
@@ -415,7 +415,7 @@ Plume主题 如下图所示
 
        预览效果
 
-       <img src="../static/build_blog/15.png">
+       <img src="../static/build_blog/15.png" alt="pixel-blast 背景效果预览" />
 
        安装依赖
 
@@ -441,7 +441,7 @@ Plume主题 如下图所示
 
        效果预览
 
-       <img src="../static/build_blog/16.png">
+       <img src="../static/build_blog/16.png" alt="hyper-speed 背景效果预览" />
 
        安装依赖
 
@@ -467,7 +467,7 @@ Plume主题 如下图所示
 
        预览效果
 
-       <img src="../static/build_blog/17.png">
+       <img src="../static/build_blog/17.png" alt="liquid-ether 背景效果预览" />
 
        安装依赖
 

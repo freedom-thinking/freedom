@@ -8,15 +8,15 @@ permalink: /note/CAD入门/
 
 第一种、鼠标在空白区域右击
 
-<img src="../static/CAD/1.png" style="zoom: 50%;">
+<img src="../static/CAD/1.png" style="zoom: 50%;" alt="在绘图区右键弹出的菜单，最下方是「选项(O)...」" />
 
 第二种、点击左上角红色CAD图标
 
-<img src="../static/CAD/2.png" alt="image-20260307091204282" style="zoom:50%;" />
+<img src="../static/CAD/2.png" style="zoom:50%;" alt="点击左上角 A 图标展开的文件菜单，最下方是「选项」按钮" />
 
 第三种、键盘输入op 回车
 
-<img src="../static/CAD/3.png" alt="image-20260307091253888" style="zoom:50%;" />
+<img src="../static/CAD/3.png" style="zoom:50%;" alt="命令行输入 op 后弹出的命令提示，选中 OP (OPTIONS)" />
 
 #### 2.界面缩放
 

@@ -10,7 +10,7 @@ permalink: /note/单片机/
 
 单片机：Single-Chip-Microcomputer,单片机微型计算机，是一种集成电路芯片。它的特点是体积小、功耗低、集成度高、使用方便、拓展灵活。
 
-<img src="../static/STM32/1.png">
+<img src="../static/STM32/1.png" alt="单片机芯片实物照片，黑色方形封装，四周密布引脚" />
 
 ### (二)、单片机有什么用？
 
@@ -73,7 +73,7 @@ IO：提高并行驱动能力、增加IO功能
 
 ### (三)、cortex-M3/4/7介绍
 
-<img src="../static/STM32/2.png">
+<img src="../static/STM32/2.png" alt="Cortex M3、M4、M7 对比表：架构版本、主频、流水线、DSP 指令、浮点单元" />
 
 
 
@@ -87,11 +87,11 @@ ST累计推出了：5大类、18个系列、1000多个型号的Cortex内核微�
 
 ### (二)、STM32分类
 
-<img src="../static/STM32/3.png">
+<img src="../static/STM32/3.png" alt="STM32 五大类产品分类图" />
 
 ### (三)、STM32命名规则
 
-<img src="../static/STM32/4.png">
+<img src="../static/STM32/4.png" alt="STM32 命名规则表：引脚数、Flash 容量、封装形式、温度范围" />
 
 ### (四)、STM32选型
 
@@ -107,11 +107,11 @@ ST累计推出了：5大类、18个系列、1000多个型号的Cortex内核微�
 
 2. ##### 数据手册内容概要
 
-   <img src="../static/STM32/5.png">
+   <img src="../static/STM32/5.png" alt="STM32F103ZET6 数据手册首页" />
 
 3. ##### STM32F103ZET6引脚分布
 
-   <img src="../static/STM32/6.png" alt="image-20260317190734469" style="zoom: 33%;" /><img src="../static/STM32/7.png" alt="image-20260317190808210" style="zoom: 70%;" />
+   <img src="../static/STM32/6.png" style="zoom: 33%;" alt="STM32F103ZET6 芯片实物，LQFP144 封装" /><img src="../static/STM32/7.png" style="zoom: 70%;" alt="STM32F103ZET6 引脚分布图，LQFP144 四边共 144 个引脚" />
 
    STM32引脚类型：
    电源引脚、晶振引脚、复位引脚、
@@ -124,13 +124,13 @@ ST累计推出了：5大类、18个系列、1000多个型号的Cortex内核微�
    - 底层协议：芯片和仿真器之间的通信规则(SWD/JTAG)
    - 上层工具：电脑和芯片之间的桥梁(DAP/ST-link/J-Link)
    
-   <img src="../static/STM32/8.png">
+   <img src="../static/STM32/8.png" alt="下载接口说明表：SWD、JTAG 协议与 DAP、ST-Link 仿真器" />
 
 #### (2)、最小系统
 
 保证MCU正常工作的最小电路组成单元
 
-<img src="../static/STM32/9.png">
+<img src="../static/STM32/9.png" alt="STM32 最小系统框图：电源、晶振、复位、下载接口、启动配置" />
 
 #### (3)、IO分配
 
@@ -140,11 +140,11 @@ ST累计推出了：5大类、18个系列、1000多个型号的Cortex内核微�
 
 ### (一)、常用开发工具简介
 
-<img src="../static/STM32/10.png">
+<img src="../static/STM32/10.png" alt="常用开发工具对比表：Keil MDK、STM32CubeMX、STM32CubeIDE" />
 
 ### (二)、安装MDK
 
-<img src="../static/STM32/11.png">
+<img src="../static/STM32/11.png" alt="MDK5 安装向导界面" />
 
 MDK5 的安装分为两步：1，安装 MDK5；2，安装器件支持包。
 
@@ -158,7 +158,7 @@ MDK5 的安装比较简单，具体安装步骤请参考图 3.2.1 的 **安装�
 
 个位置，比如我们安装在 D 盘（都安装在：D:\MDK5.34 路径下），如图 3.2.2 所示：
 
-<img src="../static/STM32/35.png">
+<img src="../static/STM32/35.png" alt="MDK5 安装路径设置：Core 与 Pack 放在同一目录" />
 
 ### (三)、安装仿真驱动器
 
@@ -187,11 +187,11 @@ ST LINK仿真器需要安装驱动器
 
 #### 2.为什么要安装CH340 USB虚拟串口驱动？
 
-<img src="../static/STM32/12.png">
+<img src="../static/STM32/12.png" alt="DAP 仿真器与开发板、电脑之间的连接示意" />
 
 #### 3.USB虚拟串口作用
 
-<img src="../static/STM32/13.png">
+<img src="../static/STM32/13.png" alt="为什么需要安装 CH340 USB 虚拟串口驱动" />
 
 ##### 串口1、串口2是什么意思？
 
@@ -213,7 +213,7 @@ ST LINK仿真器需要安装驱动器
 
 ### (五)、MDK5编译例程
 
-<img src="../static/STM32/14.png">
+<img src="../static/STM32/14.png" alt="MDK5 编译例程界面：工具栏与编译输出窗口" />
 
 ### (六)、串口下载程序
 
@@ -233,11 +233,11 @@ ST LINK仿真器需要安装驱动器
 
 #### 2.串口下载硬件连接
 
-<img src="../static/STM32/15.png">
+<img src="../static/STM32/15.png" alt="串口下载的硬件连接：USB 转 TTL 模块与开发板接线" />
 
 #### 3.STM32启动模式(M3和M4)
 
-<img src="../static/STM32/16.png">
+<img src="../static/STM32/16.png" alt="STM32 启动模式表：BOOT0 与 BOOT1 的三种组合" />
 
 ##### (1) ISP下载程序一般步骤
 
@@ -251,21 +251,21 @@ ST LINK仿真器需要安装驱动器
 
 ##### (3) 串口一键下载原理
 
-<img src="../static/STM32/17.png">
+<img src="../static/STM32/17.png" alt="串口一键下载电路原理图" />
 
 ##### (4) 不使用一键下载的CH340参考电路
 
-<img src="../static/STM32/18.png">
+<img src="../static/STM32/18.png" alt="不使用一键下载时的 CH340 参考电路" />
 
 ### (七)、DAP下载程序
 
 #### 1.DAP下载硬件连接
 
-<img src="../static/STM32/19.png">
+<img src="../static/STM32/19.png" alt="DAP 下载的硬件连接" />
 
 #### 2.在MDK上配置DAP
 
-<img src="../static/STM32/20.png">
+<img src="../static/STM32/20.png" alt="MDK 中配置 DAP 调试器：Options for Target 的 Debug 页" />
 
 #### 3.DAP调试程序
 
@@ -273,11 +273,11 @@ ST LINK仿真器需要安装驱动器
 
 Cortex-M内核含有硬件调试模块，该模块可在取指(指令断点)或访问数据(数据断点)时停止。内核停止时，可以查询内核的内部状态和系统的外部状态。完成查询后，可恢复程序执行。
 
-<img src="../static/STM32/21.png">
+<img src="../static/STM32/21.png" alt="JTAG 与 SWD 调试原理示意" />
 
 ##### (2) 灵活的SWJ-DP引脚分配
 
-<img src="../static/STM32/22.png">
+<img src="../static/STM32/22.png" alt="SWJ-DP 引脚分配表" />
 
 F1系列可以通过AF10_MAPR寄存器的SWJ_CFG[2:0]位来释放部分或者全部SWJ-DP引脚
 
@@ -289,35 +289,35 @@ F4/F7/H7系列默认全部SWJ-DP引脚复用功能并映射到复用功能0(AF0)
 
 #### 1.Cortex M内核 & 芯片
 
-<img src="../static/STM32/23.png">
+<img src="../static/STM32/23.png" alt="Cortex M 内核与芯片结构框图" />
 
 #### 2.F1系统架构
 
-<img src="../static/STM32/24.png">
+<img src="../static/STM32/24.png" alt="F1 系统架构：4 个主动单元与 4 个被动单元" />
 
-<img src="../static/STM32/25.png">
+<img src="../static/STM32/25.png" alt="F1 系统架构框图：AHB 高性能总线与 APB 外设总线" />
 
 #### 3.F4系统架构
 
-<img src="../static/STM32/26.png">
+<img src="../static/STM32/26.png" alt="F4 系统架构：8 个主控总线与 7 个被控总线" />
 
-<img src="../static/STM32/27.png">
+<img src="../static/STM32/27.png" alt="F4 系统架构框图" />
 
 #### 4.F7系统架构
 
-<img src="../static/STM32/28.png">
+<img src="../static/STM32/28.png" alt="F7 主系统架构树状图：AXI 转 AHB 总线桥与 AHB 总线矩阵" />
 
-<img src="../static/STM32/29.png">
+<img src="../static/STM32/29.png" alt="F7 多重 AHB 总线矩阵：12 个总线主控制器与 8 个总线从控制器" />
 
-<img src="../static/STM32/30.png">
+<img src="../static/STM32/30.png" alt="F7 系统架构框图" />
 
 #### 5.H7系统架构
 
-<img src="../static/STM32/31.png">
+<img src="../static/STM32/31.png" alt="H7 主系统架构树状图：一个 AXI 总线矩阵、两个 AHB 总线矩阵" />
 
-<img src="../static/STM32/32.png">
+<img src="../static/STM32/32.png" alt="H7 系统架构框图" />
 
-<img src="../static/STM32/33.png">
+<img src="../static/STM32/33.png" alt="H7 总线主设备与总线从设备互连表" />
 
 ### (二)、STM32的寻址范围
 
@@ -373,7 +373,7 @@ STM32是一个32位单片机，他可以很方便的访问4GB以内的存储空�
 
 1. 下载相关STM32Cube固件包(F1/F4/H7)，去ST官网搜索STM32Cube 。地址： [STM32CubeF1 | Product - STMicroelectronics](https://www.st.com/en/embedded-software/stm32cubef1.html)
 
-   <img src="../static/STM32/34.png">
+   <img src="../static/STM32/34.png" alt="STM32Cube F1 固件包下载页面" />
 
 2. 搭建开发环境
 
@@ -381,5 +381,5 @@ STM32是一个32位单片机，他可以很方便的访问4GB以内的存储空�
 
    为了让工程的文件目录结构更加清晰易懂，我们会在工程根目录文件夹下建立以下几个文件夹，每个文件夹名称及其作用如表：
 
-   <img src="../static/STM32/36.png" style="zoom: 87%;" >
+   <img src="../static/STM32/36.png" style="zoom: 87%;" alt="工程文件夹的目录结构" />
 
