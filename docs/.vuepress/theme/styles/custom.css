@@ -14,6 +14,9 @@
   --trace-ink: #2b2620;
   --trace-ink-soft: rgba(43, 38, 32, 0.74);
   --trace-ink-faint: rgba(43, 38, 32, 0.48);
+  /* 次级文字下限：给主题的 text-3 用，必须满足 WCAG AA 4.5:1
+     （0.48 的 faint 只有约 2.4:1，仅适合纯装饰，不能承载文字） */
+  --trace-ink-muted: rgba(43, 38, 32, 0.72);
   --trace-rule: rgba(43, 38, 32, 0.12);
   --trace-rule-strong: rgba(43, 38, 32, 0.24);
 
@@ -35,6 +38,7 @@ html[data-theme="dark"] {
   --trace-ink: #ece4d6;
   --trace-ink-soft: rgba(236, 228, 214, 0.78);
   --trace-ink-faint: rgba(236, 228, 214, 0.5);
+  --trace-ink-muted: rgba(236, 228, 214, 0.68);
   --trace-rule: rgba(236, 228, 214, 0.13);
   --trace-rule-strong: rgba(236, 228, 214, 0.26);
 
@@ -57,7 +61,7 @@ html[data-theme="dark"] {
 
   --vp-c-text-1: var(--trace-ink);
   --vp-c-text-2: var(--trace-ink-soft);
-  --vp-c-text-3: var(--trace-ink-faint);
+  --vp-c-text-3: var(--trace-ink-muted);
 
   --vp-c-brand-1: var(--trace-accent);
   --vp-c-brand-2: #c26a44;

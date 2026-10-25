@@ -13,15 +13,20 @@ import { webpackBundler } from '@vuepress/bundler-webpack'
 import { defineUserConfig } from 'vuepress'
 import { plumeTheme } from 'vuepress-theme-plume'
 
+// 部署路径的唯一来源：base 与 head 里的手写资源路径都从这里拼，改一处就够
+const BASE = '/freedom/'
+
 export default defineUserConfig({
-  base: '/freedom/',
+  base: BASE,
   lang: 'zh-CN',
   title: '迷途小狗',
   description: '迷途小狗 —— 一个还在路上的开发者，写下的项目、笔记和碎碎念',
 
   head: [
     // 配置站点图标
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: 'smallSheep.svg' }],
+    // 注意：必须带 base 前缀。写成相对路径 'smallSheep.svg' 时，
+    // 只有首页（/freedom/）能解析对，文章页会去请求 /freedom/project/xxx/smallSheep.svg 并 404。
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: `${BASE}smallSheep.svg` }],
     // 手机浏览器地址栏配色，跟随纸感主题
     ['meta', { name: 'theme-color', content: '#faf7f0', media: '(prefers-color-scheme: light)' }],
     ['meta', { name: 'theme-color', content: '#17140f', media: '(prefers-color-scheme: dark)' }],

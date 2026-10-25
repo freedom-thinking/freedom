@@ -1,9 +1,8 @@
 {
-  "name": "flower",
+  "name": "trace-blog",
   "type": "module",
   "version": "1.0.0",
-  "description": "llll",
-  "author": "'flower' <'12756957+flower-blooming@user.noreply.gitee.com'>",
+  "description": "迷途小狗 · Trace —— 个人博客，VuePress + plume 主题，手账纸感视觉",
   "license": "MIT",
   "scripts": {
     "docs:build": "vuepress build docs --clean-cache --clean-temp",

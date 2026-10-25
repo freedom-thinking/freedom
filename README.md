@@ -1,42 +1,48 @@
-# wwww
+# 迷途小狗 · Trace
 
-The Site is generated using [vuepress](https://vuepress.vuejs.org/) and [vuepress-theme-plume](https://github.com/pengzhanbo/vuepress-theme-plume)
+个人博客：项目复盘、学习笔记、随笔。
 
-## Install
+- 站点：https://freedom-thinking.github.io/freedom/
+- 技术：VuePress 2 + [vuepress-theme-plume](https://theme-plume.vuejs.press/)
+- 视觉：自绘「痕迹手账」纸感主题，样式集中在 `docs/.vuepress/theme/styles/custom.css`
 
-```sh
-npm i
-```
-
-## Usage
+## 本地开发
 
 ```sh
-# start dev server
-npm run docs:dev
-# build for production
-npm run docs:build
-# preview production build in local
-npm run docs:preview
-# update vuepress and theme
-npm run vp-update
+npm i                 # 安装依赖
+npm run docs:dev      # 开发服务器
+npm run docs:build    # 生产构建，产物在 docs/.vuepress/dist
+npm run docs:preview  # 预览构建产物
 ```
 
-## Deploy to GitHub Pages
+## 目录
 
-The plume theme has been created with GitHub Actions: `.github/workflows/docs-deploy.yml`. You also need to make the following settings in the GitHub repository:
+| 路径 | 内容 |
+|------|------|
+| `docs/README.md` | 首页（由 `HomeTrace.vue` 渲染，不是普通 markdown 页） |
+| `docs/project/` | 项目复盘 |
+| `docs/personal/` | 随笔 |
+| `docs/note/` | 学习笔记（带侧边栏，`sidebar: 'auto'`） |
+| `docs/resume/`、`docs/interview/` | 简历与面试相关，导航栏暂时隐藏（**隐藏 ≠ 下线，URL 仍能访问且会进 sitemap**） |
+| `docs/.vuepress/` | 站点配置、自定义组件、样式 |
 
-- [ ] `settings > Actions > General`, Scroll to the bottom of the page, under `Workflow permissions`, check `Read and write permissions`, and click the save button.
+## 写新文章
 
-- [ ] `settings > Pages`, In `Build and deployment`, select `Deploy from a branch` for `Source`, choose `gh-pages` for `Branch`, and click the save button.
-  (The `gh-pages` branch may not exist upon first creation. You can complete the above setup first, push the code to the main branch, wait for `github actions` to finish, and then proceed with the setup.)
+1. 在对应目录新建 `xxx.md`，frontmatter 至少要有 `title` 和 `permalink`
+2. 图片放同级 `static/` 下，用 `<img src="./static/xxx.png" alt="...">` 引用（别漏 alt）
+3. 首页的项目卡片和「最近的痕迹」是 `HomeTrace.vue` 里手写的数组，新文章要手动加进去
 
-- [ ] Modify the `base` option in `docs/.vuepress/config.ts`:
-  - If you are planning to deploy to `https://<USERNAME>.github.io/`, you can skip this step as `base` defaults to `"/"`.
-  - If you are planning to deploy to `https://<USERNAME>.github.io/<REPO>/`, meaning your repository URL is `https://github.com/<USERNAME>/<REPO>`, set `base` to `"/<REPO>/"`.
+## 部署
 
-To customize a domain name, please refer to [Github Pages](https://docs.github.com/zh/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages)
+推送到 `main` 触发 `.github/workflows/deploy.yml`，构建产物发布到 **`blog-pages`** 分支（不是 `gh-pages`）。
 
-## Documents
+首次配置需要在仓库里设两处：
 
-- [vuepress](https://vuepress.vuejs.org/)
-- [vuepress-theme-plume](https://theme-plume.vuejs.press/)
+- `Settings → Actions → General → Workflow permissions` 选 **Read and write permissions**
+- `Settings → Pages → Build and deployment` 的 Source 选 **Deploy from a branch**，Branch 选 **`blog-pages`**
+
+`base` 在 `docs/.vuepress/config.js` 顶部统一声明为 `/freedom/`，同时作用于站点路径和 favicon 等手写资源路径，换部署位置只改这一处。
+
+## 依赖说明
+
+`three` / `ogl` / `postprocessing` 是 plume 主题的 peerDependencies（用于可选的 WebGL 背景特效）。当前站点没用任何特效组件，保留是为了将来启用特效时不因缺依赖而构建失败。
