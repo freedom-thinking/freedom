@@ -1324,6 +1324,17 @@ html[data-theme="dark"] .trace-horse__sprite {
   color: var(--trace-ink-faint);
 }
 
+/* 更紧凑的版本：图片数量多时使用，单张再缩小约 20% */
+.shot-row.is-compact figure {
+  width: calc(16% - 8px);
+  max-width: 110px;
+}
+
+.shot-row.is-compact figcaption {
+  margin-top: 5px;
+  font-size: 11px;
+}
+
 /* ==========================================================================
    页脚
    ========================================================================== */
