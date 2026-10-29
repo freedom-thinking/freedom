@@ -9,7 +9,7 @@ import { defineNavbarConfig } from 'vuepress-theme-plume'
 export default defineNavbarConfig([
   { text: '首页', link: '/' },
   { text: '项目', link: '/project/' },
-  { text: '随笔', link: '/personal/' },
+  // { text: '随笔', link: '/personal/' },   // 暂隐藏
   // { text: '简历', link: '/resume/' },   // 暂隐藏
   // { text: '面试', link: '/interview/' },   // 暂隐藏
   // { text: '标签', link: '/blog/tags/' },
