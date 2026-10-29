@@ -59,7 +59,8 @@ const project = defineCollection({
   //   postList: true, // 是否启用文章列表页
   //   tags: true, // 是否启用标签页
   //   archives: true, // 是否启用归档页
-  //   categories: true, // 是否启用分类页
+  // 分类由目录结构自动推导，项目文章都平铺在 project/ 下，没有子目录，所以关掉分类页（否则是一个空页面）
+  categories: false,
   //   postCover: 'right', // 文章封面位置
   //   pagination: 15, // 每页显示文章数量
 })

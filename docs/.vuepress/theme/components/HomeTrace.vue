@@ -27,7 +27,7 @@ const projects = [
     year: '2025',
     kind: '全栈',
     desc: '查院校、刷题、计划打卡、资料分享、论坛，想让人少打开几个 App。踩过跨域、预检请求和 SPA 路由回退。',
-    tags: ['Vue', 'SpringBoot', 'MySQL'],
+    tags: ['Vue', 'Spring Boot', 'MySQL'],
   },
   {
     title: '教师工作量管理系统',
@@ -35,7 +35,7 @@ const projects = [
     year: '2025',
     kind: '前端',
     desc: '把课时、论文、带班、指导这些零散的事，学期末一次性算清。我负责页面和接口对接。',
-    tags: ['Vue3', 'Element Plus'],
+    tags: ['Vue 3', 'Element Plus'],
   },
   {
     title: '跑腿小程序',
@@ -59,29 +59,7 @@ const projects = [
     year: '2025',
     kind: '跟练复盘',
     desc: '跟着教程做的在线教育平台。不为写代码，想知道企业级项目到底怎么从 0 走到 1。',
-    tags: ['SpringCloud', '微服务'],
-  },
-]
-
-// 03 最近写的
-const notes = [
-  {
-    title: '慢即是快',
-    to: '/personal/vm826x6p/',
-    date: '2026.03.26',
-    excerpt: '网课开 2 倍速、跳过实操，最后花了两倍时间倒回去补。',
-  },
-  {
-    title: '加油鸭考研平台',
-    to: '/project/vjhjstw5/',
-    date: '2026.02.27',
-    excerpt: '把五件事塞进一个网站，然后跟部署较劲的一整段日子。',
-  },
-  {
-    title: '疑似 2026 朝我开了第一枪',
-    to: '/personal/mlo3kryu/',
-    date: '2026.02.26',
-    excerpt: '蚂蚱、麻将、胡闹厨房，和一个躲在房间里哭完的自己。',
+    tags: ['Spring Cloud', '微服务'],
   },
 ]
 
@@ -100,14 +78,11 @@ const notes = [
             一路走来，<br>总得留下点痕迹
           </h1>
           <p class="trace-hero__lead">
-            项目、笔记，还有一些不太像技术博客的碎碎念，都留在这里。
+            项目、笔记，还有那些做坏了又重来的过程，都留在这里。
           </p>
           <div class="trace-hero__actions">
             <RouterLink class="trace-btn trace-btn--brand" to="/project/">
               看项目
-            </RouterLink>
-            <RouterLink class="trace-btn" to="/personal/">
-              读随笔
             </RouterLink>
             <a
               class="trace-btn"
@@ -235,34 +210,7 @@ const notes = [
       </div>
     </section>
 
-    <!-- ── 03 最近写的 ────────────────────────────────────── -->
-    <section class="trace-sec">
-      <header class="trace-sec__head">
-        <div>
-          <p class="trace-kicker">
-            <span class="trace-kicker__num">03</span>随笔
-          </p>
-          <h2 class="trace-h2">
-            最近的痕迹
-          </h2>
-        </div>
-        <RouterLink class="trace-more" to="/personal/">
-          全部随笔 <span aria-hidden="true">→</span>
-        </RouterLink>
-      </header>
-
-      <ol class="trace-notes">
-        <li v-for="n in notes" :key="n.to">
-          <RouterLink :to="n.to">
-            <time>{{ n.date }}</time>
-            <span class="trace-notes__title">{{ n.title }}</span>
-            <span class="trace-notes__ex">{{ n.excerpt }}</span>
-          </RouterLink>
-        </li>
-      </ol>
-    </section>
-
-    <!-- ── 04 收尾 ───────────────────────────────────────── -->
+    <!-- ── 03 收尾 ───────────────────────────────────────── -->
     <section class="trace-sec trace-quote">
       <div class="trace-quote__main">
         <blockquote>
